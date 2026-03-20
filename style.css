@@ -1,0 +1,2147 @@
+/* --- FONTS --- */
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Noto+Sans+TC:wght@900&display=swap');
+
+/* --- RESET --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Arial Black', 'Helvetica Neue', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Night time: Very heavy dark overlay on top of the image to make neon stick out */
+    background:
+        linear-gradient(rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.98)),
+        url('images/window_sill_night_city.png') no-repeat center center/cover;
+    color: #fff;
+}
+
+/* --- BACKGROUND & NEON EFFECT --- */
+.vignette-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 99;
+    /* Below the neon but above most other things */
+    /* Ambient Darkness (Vignette) - Darken centered content slightly, permanently */
+    background: radial-gradient(circle at 50% 50%, transparent 40%, rgba(0, 0, 0, 0.7) 100%);
+}
+
+.window-frame-effect {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 100;
+    contain: strict;
+    will-change: opacity;
+
+    /* Neon light source from BOTTOM RIGHT + Thin X-Metal Shadows + Window Edges */
+    background:
+        /* 
+           Thin X-Shadows (Metal Grille)
+           Bottom-Left to Top-Right (45deg): Extends the entire way OUT of the screen.
+        */
+        linear-gradient(45deg, transparent 49%, rgba(0, 0, 0, 0.4) 50%, transparent 51%) center / 150% 150% no-repeat,
+
+        /* 
+           Bottom-Right to Top-Left (135deg): The shorter grille.
+           Does not reach the edge of the screen (75% width, 85% height).
+        */
+        linear-gradient(135deg, transparent 49%, rgba(0, 0, 0, 0.4) 50%, transparent 51%) center / 95% 105% no-repeat,
+
+        /* 
+           Shadows cast by the walls of the room.
+           Angled rectangular shadow starting past the tips of the shorter 135deg grille (calc'd 200px closer to center).
+           Matches 45deg orientation (parallel to the longer grille). Soft edge at the tips, fading darker towards the screen edges.
+        */
+        linear-gradient(45deg, #000 0%, rgba(0, 0, 0, 0.6) calc(2.5% + 250px), transparent calc(2.5% + 300px), transparent calc(97.5% - 300px), rgba(0, 0, 0, 0.6) calc(97.5% - 250px), #000 100%),
+
+        /* Neon Glow (Bottom Right) - Raised to top of stack, Intensity bumped to 0.4 for visibility */
+        radial-gradient(circle at 85% 90%, rgba(255, 0, 128, 0.4) 0%, rgba(255, 0, 128, 0.15) 50%, rgba(255, 0, 128, 0) 100%);
+}
+
+/* --- RAIN OVERLAY --- */
+.rain-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 101;
+    /* Strictly visible on the glass above all pseudo-shadows */
+    pointer-events: none;
+    overflow: hidden;
+    /* Changed from -45deg to -30deg (+15deg clockwise tilt) based on User request */
+    transform: rotate(-30deg);
+    width: 200vw;
+    height: 200vh;
+    top: -50vh;
+    left: -50vw;
+}
+
+.fast-rain-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    /* Behind regular raindrops, but above background elements */
+    pointer-events: none;
+    overflow: hidden;
+    transform: rotate(-30deg);
+    /* Match angle */
+    width: 200vw;
+    height: 200vh;
+    top: -50vh;
+    left: -50vw;
+}
+
+.static-rain-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    pointer-events: none;
+    overflow: hidden;
+    transform: rotate(-30deg);
+    width: 200vw;
+    height: 200vh;
+    top: -50vh;
+    left: -50vw;
+}
+
+.raindrop {
+    position: absolute;
+    /* Transparent gradient */
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.4));
+    width: 6px;
+    height: 14px;
+    border-radius: 100% 100% 40% 40%;
+    /* Soft shadow and blur for edges */
+    box-shadow: 2px 3px 6px rgba(0, 0, 0, 0.3);
+    filter: blur(0.8px);
+    animation: rainSlide var(--duration) var(--delay) ease-in forwards;
+    opacity: 0;
+}
+
+/* Raindrop trail that stretches upward and fades out */
+.raindrop::after {
+    content: '';
+    position: absolute;
+    bottom: 95%; /* Attach slightly inside the raindrop to avoid gaps */
+    left: 10%; 
+    width: 80%; /* Almost full width of raindrop */
+    height: 350px; /* Much longer trail */
+    
+    /* Transparent center: slightly stronger edges, visible highly transparent middle */
+    background: linear-gradient(to top, 
+        rgba(0,0,0,0.4) 0%, 
+        rgba(0,0,0,0.1) 15%, 
+        transparent 100%),
+        linear-gradient(to right,
+        rgba(0,0,0,0.3) 0%,
+        rgba(0,0,0,0.05) 40%,
+        rgba(0,0,0,0.05) 60%,
+        rgba(0,0,0,0.3) 100%);
+        
+    border-radius: 4px;
+    filter: blur(1.5px); /* Less blur to solidify edges */
+        
+    transform-origin: bottom center;
+    /* Scale it down initially, then stretch it */
+    animation: rainTrail var(--duration) var(--delay) ease-in forwards;
+}
+
+@keyframes rainTrail {
+    0% { transform: scaleY(0); opacity: 0; }
+    10% { transform: scaleY(0.05); opacity: 0; } /* Starts hidden until movement */
+    30% { transform: scaleY(0.15); opacity: 0.6; }
+    40% { transform: scaleY(0.08); opacity: 0.4; } /* Shorten during pause */
+    50% { transform: scaleY(0.2); opacity: 0.7; }
+    85% { transform: scaleY(1); opacity: 0.9; }   /* Full length trailing, stronger opacity */
+    100% { transform: scaleY(1); opacity: 0; }    /* Fade out at bottom */
+}
+
+.static-raindrop {
+    position: absolute;
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5));
+    width: 6px;
+    height: 6px;
+    /* Size & Shape handled in JS for randomness */
+    box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
+    filter: blur(0.5px);
+    animation: staticRainFade var(--duration) ease-in-out forwards;
+    opacity: 0;
+}
+
+@keyframes staticRainFade {
+    0% {
+        opacity: 0;
+        transform: scale(calc(var(--scale-base) * 0.5));
+    }
+
+    10% {
+        opacity: 0.8;
+        transform: scale(var(--scale-base));
+    }
+
+    80% {
+        opacity: 0.8;
+        transform: scale(var(--scale-base));
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(calc(var(--scale-base) * 0.8));
+    }
+}
+
+.fast-raindrop {
+    position: absolute;
+    /* Thin black rectangle */
+    background: rgba(0, 0, 0, 0.6);
+    width: 2px;
+    /* Added width to make it visible */
+    height: 40px;
+    /* Longer tail */
+    animation: fastRainSlide var(--duration) linear forwards;
+    opacity: 0;
+}
+
+@keyframes fastRainSlide {
+    0% {
+        transform: translateY(-20vh);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 0.8;
+    }
+
+    90% {
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: translateY(120vh);
+        opacity: 0;
+    }
+}
+
+@keyframes rainSlide {
+    0% {
+        transform: translateY(-20vh) translateX(0) scaleY(1) rotate(var(--slide-rotation, 0deg));
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 0.8;
+    }
+
+    30% {
+        transform: translateY(20vh) translateX(calc(40vh * var(--slide-angle, 0))) scaleY(1.3) rotate(var(--slide-rotation, 0deg));
+        opacity: 0.8;
+    }
+
+    40% {
+        transform: translateY(20vh) translateX(calc(40vh * var(--slide-angle, 0))) scaleY(0.6) rotate(var(--slide-rotation, 0deg));
+        /* 1 Pause and bunch up (water tension effect) */
+        opacity: 0.9;
+    }
+
+    50% {
+        transform: translateY(22vh) translateX(calc(42vh * var(--slide-angle, 0))) scaleY(0.9) rotate(var(--slide-rotation, 0deg));
+        /* Slow slide during pause */
+        opacity: 0.9;
+    }
+
+    100% {
+        transform: translateY(120vh) translateX(calc(140vh * var(--slide-angle, 0))) scaleY(2) rotate(var(--slide-rotation, 0deg));
+        /* Rush to the bottom */
+        opacity: 0;
+    }
+}
+
+/* --- WINDOW FLOOR (Ledger) --- */
+/* --- WINDOW FLOOR (Ledger) --- */
+.window-floor {
+    /* Anchor high up on the left to swoop down across top-left corner */
+
+    /* Very long to cut across */
+    width: 1120vw;
+
+    /* Much thicker to be visible as a significant "floor" area */
+    height: 100vh;
+
+    /* Dark Tiles */
+    background-color: #0c0c0c;
+    background-image:
+        /* Shadow Gradient: Extremely dark near top/left, slightly lighter near bottom/right where neon is */
+        linear-gradient(135deg, rgba(0, 0, 0, 0.98) 0%, rgba(0, 0, 0, 0.8) 40%, #000 90%),
+
+        /* Tile Grid (White tiles, dark grout) */
+        linear-gradient(#000 2px, transparent 2px),
+        linear-gradient(90deg, #000 2px, transparent 2px),
+
+        /* Base Tile Color (Dim White/Grey) */
+        linear-gradient(#444, #444);
+
+    /* Increased tile size to 360px (3x) */
+    background-size: 100% 100%, 360px 360px, 360px 360px, 100% 100%;
+
+    /* Angle up towards top-center */
+    transform: rotate(-50deg);
+    transform-origin: bottom left;
+
+    z-index: 5;
+    pointer-events: none;
+}
+
+/* --- TICKET CONTAINER --- */
+.ticket-container {
+    position: absolute;
+    top: 40%;
+    /* Pushed straight up onto the blank space (the window frame) */
+    left: 37%;
+    /* Pushed to the left side to avoid overlapping the newspapers */
+    transform: translate(-50%, -50%) rotate(-5deg) scale(0.5156);
+    /* Reverted scaling and skew per user request */
+    z-index: 6;
+    /* Lowered below the newspapers (wrapper is 7) */
+    width: 250vw;
+    max-width: 1700px;
+    height: 75vh;
+    display: flex;
+    box-shadow: 20px 30px 40px rgba(0, 0, 0, 0.85);
+    /* Hard Cast Shadow matching top-left light source */
+    border-radius: 20px;
+    /* Increased border radius */
+    overflow: hidden;
+    border: none;
+    /* Ensure no border */
+    will-change: transform;
+    opacity: 0; /* Starts invisible for animation */
+    animation: flyInTicket 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 3.2s forwards; /* Starts last (after papers) */
+}
+
+@keyframes flyInTicket {
+    0% {
+        opacity: 0;
+        transform: translate(-100vw, -100vh) rotate(-35deg) scale(0.5156);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) rotate(-5deg) scale(0.5156); /* Target state */
+    }
+}
+
+/* Shadow Cast by the Right Newspaper ONTO the Ticket */
+.ticket-container::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 50;
+    /* Above all ticket content */
+    /* Dark shadow stretching across from the top right edge */
+    background: linear-gradient(225deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.45) 30%, transparent 70%);
+}
+
+/* --- TICKET DYNAMIC POSITIONS --- */
+.ticket-pos-center { top: 40%; left: 37%; transform: translate(-50%, -50%) rotate(-5deg) scale(0.5156); opacity: 1; z-index: 10; }
+.ticket-pos-docked { top: 85%; left: 55%; transform: translate(-50%, -50%) rotate(-2deg) scale(0.35); opacity: 0.95; z-index: 10; cursor: pointer; }
+.ticket-pos-off-left { top: 40%; left: -60vw; transform: translate(-50%, -50%) rotate(-20deg) scale(0.5156); opacity: 0; z-index: 6; }
+.ticket-pos-off-bottom { top: 150vh; left: 37%; transform: translate(-50%, -50%) rotate(10deg) scale(0.5156); opacity: 0; z-index: 6; }
+
+/* --- NEWSPAPER DYNAMIC POSITIONS --- */
+.synopsis-pos-docked { top: 85%; left: 40%; transform: translate(-50%, -50%) rotate(-15deg) scale(1.6); z-index: 8; opacity: 1; }
+.synopsis-pos-center { top: 40%; left: 37%; transform: translate(-50%, -50%) rotate(-2deg) scale(1.6); z-index: 10; opacity: 1; }
+.synopsis-pos-off-top { top: -60vh; left: 37%; transform: translate(-50%, -50%) rotate(5deg) scale(1.6); z-index: 8; opacity: 0; }
+.synopsis-pos-off-right { top: 85%; left: 150vw; transform: translate(-50%, -50%) rotate(-15deg) scale(1.6); z-index: 8; opacity: 0; }
+
+.team-pos-docked { top: 35%; left: 110%; transform: translate(-50%, -50%) rotate(10deg) scale(2.2); z-index: 9; opacity: 1; }
+.team-pos-center { top: 40%; left: 37%; transform: translate(-50%, -50%) rotate(2deg) scale(2.2); z-index: 10; opacity: 1; }
+.team-pos-off-top { top: -60vh; left: 37%; transform: translate(-50%, -50%) rotate(5deg) scale(2.2); z-index: 9; opacity: 0; }
+
+/* Highlight Button Container Target */
+.nav-list li:has(.highlight-btn) {
+    width: 100%; /* Force list item to fill container so button can scale */
+}
+
+/* Highlight Button */
+.highlight-btn {
+    border: 4px solid #222;
+    background-color: #222;
+    border-radius: 4px;
+    padding: 18px 10px !important; /* 2x height (+20%) */
+    margin: 5px 0;
+    width: 100%; /* 2x width (via li:has force) */
+    max-width: none;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    text-decoration: none !important;
+}
+.highlight-btn .nav-text {
+    color: #e63946 !important; /* Text is ticket BG color */
+    font-weight: bold;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
+    border-bottom: none !important; /* Remove normal ticket underline */
+    white-space: pre-wrap !important; /* Allow text to wrap if it exceeds width via \n */
+    text-align: center;
+    line-height: 1.2;
+    transform-origin: center !important; /* center origin for stretch effect */
+}
+.highlight-btn .arrow-icon {
+    display: none;
+}
+.highlight-btn:hover {
+    background-color: transparent;
+    text-decoration: none !important;
+    transform: none !important; /* Prevent sliding right on hover */
+}
+.highlight-btn:hover .nav-text {
+    color: #222 !important; /* Reverts back to black */
+    border-bottom: none !important; /* Prevent hover underline */
+}
+
+/* Force standard font size so it matches inactive buttons rather than blowing up as 'active' */
+body.lang-zh .nav-item.active.highlight-btn { font-size: calc(1.3rem + 1.7vw) !important; }
+body.lang-en .nav-item.active.highlight-btn { font-size: calc(1.1rem + 1.25vw) !important; }
+
+/* --- INFO CONTAINERS --- */
+/* --- INFO CONTAINERS (Stacked Papers) --- */
+.info-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 7;
+    /* Between Floor (5) and Ticket (10) */
+    pointer-events: none;
+    /* Let clicks pass through empty areas */
+}
+
+.info-card {
+    position: absolute;
+    pointer-events: auto;
+    will-change: transform;
+
+    /* Old Newspaper Look (Gray) */
+    background-color: #8c8c8c;
+    background-image: linear-gradient(135deg, #8c8c8c 0%, #4a4a4a 100%);
+    color: #050505;
+    /* Black text */
+
+    border-radius: 4px;
+    /* Slight rounding for paper corners */
+
+    /* Crumpled Edge (Subtle irregularities, not jagged tears) */
+    clip-path: polygon(0% 0%, 20% 0.5%, 40% 0%, 60% 0.5%, 80% 0%, 100% 0.5%,
+            99.5% 20%, 100% 40%, 99.5% 60%, 100% 80%, 99.5% 100%,
+            80% 99.5%, 60% 100%, 40% 99.5%, 20% 100%, 0% 99.5%,
+            0.5% 80%, 0% 60%, 0.5% 40%, 0% 20%);
+
+    border: none;
+    /* Removed overflow: hidden so shadows aren't clipped */
+    padding: 40px;
+    /* High padding generally */
+    box-sizing: border-box;
+}
+
+/* Simple shadow matching the paper wrapper size */
+.shadow-wrapper.horizontal {
+    /* Inherits some positioning if needed, covered later */
+    position: absolute;
+    box-shadow: -15px -20px 40px rgba(0, 0, 0, 0.85);
+    z-index: 8;
+    opacity: 0; /* Starts hidden */
+    animation: flyInHorizontal 1s cubic-bezier(0.2, 0.8, 0.2, 1) 2.5s forwards; /* Starts first */
+    transition: top 1s cubic-bezier(0.2, 0.8, 0.2, 1), left 1s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1s cubic-bezier(0.2, 0.8, 0.2, 1), z-index 0.5s;
+}
+
+@keyframes flyInHorizontal {
+    0% {
+        opacity: 0;
+        transform: translate(-50vw, 50vh) rotate(-45deg) scale(1.6);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) rotate(-15deg) scale(1.6); /* Standard horizontal wrapper target if transformed directly */
+    }
+}
+
+.shadow-wrapper.vertical {
+    position: absolute;
+    width: 40vw;
+    height: 45vh;
+    top: 35%;
+    left: 110%;
+    /* Pushed completely to the right edge */
+    transform: translate(-50%, -50%) rotate(10deg) scale(2.2);
+    /* Increased shadow size and reach to cast onto the left newspaper below */
+    box-shadow: -25px 30px 60px rgba(0, 0, 0, 0.95);
+    z-index: 9;
+    opacity: 0; /* Starts hidden */
+    animation: flyInVertical 1s cubic-bezier(0.2, 0.8, 0.2, 1) 2.8s forwards; /* Starts second */
+    transition: top 1s cubic-bezier(0.2, 0.8, 0.2, 1), left 1s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1s cubic-bezier(0.2, 0.8, 0.2, 1), z-index 0.5s;
+}
+
+@keyframes flyInVertical {
+    0% {
+        opacity: 0;
+        transform: translate(50vw, -50vh) rotate(35deg) scale(2.2);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) rotate(10deg) scale(2.2); /* Target state */
+    }
+}
+
+/* Specific adjustments for Vertical (Folded) Card */
+.info-card.vertical {
+    position: relative;
+    /* Override global absolute */
+    top: 0;
+    left: 0;
+    transform: none;
+    /* Inherit everything from wrapper */
+    /* Inherit dimensions from wrapper */
+    width: 100%;
+    height: 100%;
+    /* Keep 1.5x Scale */
+    padding-bottom: 0;
+    /* Remove bottom padding so content hits the edge */
+
+    /* Crumpled Top/Sides, Straight Bottom */
+    clip-path: polygon(
+            /* Top */
+            0% 0%, 20% 0.5%, 40% 0%, 60% 0.5%, 80% 0%, 100% 0.5%,
+            /* Right */
+            99.5% 20%, 100% 40%, 99.5% 60%, 100% 80%, 100% 95%,
+            /* Bottom (Straight Fold) */
+            100% 100%, 0% 100%,
+            /* Left */
+            0.5% 95%, 0% 80%, 0.5% 60%, 0% 40%, 0.5% 20%);
+}
+
+/* --- NEWSPAPER CONTENT STYLES --- */
+.newspaper-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    /* Square Border within Torn Edges - UPDATED to be faded */
+    border: 4px solid rgba(20, 20, 20, 0.3);
+    /* Faded border */
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: transparent;
+    filter: blur(0.3px);
+    /* Slight blur to everything */
+}
+
+/* --- PAPER LAYERS (DECORATIVE) --- */
+.paper-layer {
+    position: absolute;
+    pointer-events: none;
+    will-change: transform;
+    /* Decoration only */
+    background-color: #8c8c8c;
+    /* Strict Match */
+    background-image: linear-gradient(135deg, #8c8c8c 0%, #4a4a4a 100%);
+    /* Strict Match */
+
+    /* Default Crumpled Edge */
+    clip-path: polygon(0% 0%, 20% 0.5%, 40% 0%, 60% 0.5%, 80% 0%, 100% 0.5%,
+            99.5% 20%, 100% 40%, 99.5% 60%, 100% 80%, 99.5% 100%,
+            80% 99.5%, 60% 100%, 40% 99.5%, 20% 100%, 0% 99.5%,
+            0.5% 80%, 0% 60%, 0.5% 40%, 0% 20%);
+
+    /* Drop-shadow for thickness + cast shadow top-leftwards */
+    filter: drop-shadow(-1px -2px 0px #3a3a3a) drop-shadow(-2px -4px 0px #1a1a1a) drop-shadow(-20px -30px 25px rgba(0, 0, 0, 0.95));
+}
+
+/* Horizontal Layer Positioning - Tight Stack */
+.paper-layer.horizontal {
+    width: 80vw;
+    height: 55vh;
+    /* Match folded height (Half of 110vh) */
+    top: 85%;
+    /* Match new top position */
+    left: 40%;
+
+    /* Match the Folded Clip Path (Straight Top) */
+    clip-path: polygon(0% 0%, 100% 0%,
+            99.5% 20%, 100% 40%, 99.5% 60%, 100% 80%, 99.5% 100%,
+            80% 99.5%, 60% 100%, 40% 99.5%, 20% 100%, 0% 99.5%,
+            0.5% 80%, 0% 60%, 0.5% 40%, 0% 20%);
+}
+
+/* Layer 1: Just behind main */
+.paper-layer.horizontal.layer-1 {
+    z-index: 7;
+    transform: translate(-50%, -50%) rotate(-13deg) scale(1.3) translate(5px, 5px);
+    filter: brightness(0.95) drop-shadow(1px 2px 0px #333) drop-shadow(2px 4px 0px #111) drop-shadow(20px 30px 25px rgba(0, 0, 0, 0.95));
+}
+
+/* Layer 2 */
+.paper-layer.horizontal.layer-2 {
+    z-index: 6;
+    transform: translate(-50%, -50%) rotate(-17deg) scale(1.3) translate(-5px, 10px);
+    filter: brightness(0.85) drop-shadow(1px 2px 0px #2a2a2a) drop-shadow(2px 4px 0px #0a0a0a) drop-shadow(25px 35px 30px rgba(0, 0, 0, 0.95));
+}
+
+/* Layer 3 */
+.paper-layer.horizontal.layer-3 {
+    z-index: 5;
+    transform: translate(-50%, -50%) rotate(-11deg) scale(1.3) translate(10px, 15px);
+    filter: brightness(0.75) drop-shadow(1px 2px 0px #222) drop-shadow(2px 4px 0px #050505) drop-shadow(30px 40px 35px rgba(0, 0, 0, 0.95));
+}
+
+/* Layer 4 */
+.paper-layer.horizontal.layer-4 {
+    z-index: 4;
+    transform: translate(-50%, -50%) rotate(-19deg) scale(1.3) translate(-10px, 20px);
+    filter: brightness(0.65) drop-shadow(1px 2px 0px #1a1a1a) drop-shadow(2px 4px 0px #000) drop-shadow(35px 45px 35px rgba(0, 0, 0, 0.95));
+}
+
+/* Layer 5 (Bottom) */
+.paper-layer.horizontal.layer-5 {
+    z-index: 3;
+    transform: translate(-50%, -50%) rotate(-14deg) scale(1.3) translate(15px, 25px);
+    filter: brightness(0.55) drop-shadow(1px 2px 0px #111) drop-shadow(2px 4px 0px #000) drop-shadow(40px 50px 40px rgba(0, 0, 0, 0.95));
+}
+
+/* Vertical Layer Positioning - Tight Stack */
+.paper-layer.vertical {
+    width: 40vw;
+    height: 45vh;
+    top: 35%;
+    left: 90%;
+
+    /* Match the Folded Clip Path */
+    clip-path: polygon(
+            /* Top */
+            0% 0%, 20% 0.5%, 40% 0%, 60% 0.5%, 80% 0%, 100% 0.5%,
+            /* Right */
+            99.5% 20%, 100% 40%, 99.5% 60%, 100% 80%, 100% 95%,
+            /* Bottom (Straight Fold) */
+            100% 100%, 0% 100%,
+            /* Left */
+            0.5% 95%, 0% 80%, 0.5% 60%, 0% 40%, 0.5% 20%);
+}
+
+.paper-layer.vertical.layer-1 {
+    z-index: 8;
+    transform: translate(-50%, -50%) rotate(7deg) scale(1.95) translate(-5px, 5px);
+    filter: brightness(0.95) drop-shadow(1px 2px 0px #333) drop-shadow(2px 4px 0px #111) drop-shadow(20px 30px 25px rgba(0, 0, 0, 0.95));
+}
+
+.paper-layer.vertical.layer-2 {
+    z-index: 7;
+    transform: translate(-50%, -50%) rotate(13deg) scale(1.95) translate(5px, 8px);
+    filter: brightness(0.85) drop-shadow(1px 2px 0px #2a2a2a) drop-shadow(2px 4px 0px #0a0a0a) drop-shadow(25px 35px 30px rgba(0, 0, 0, 0.95));
+}
+
+/* Layer 3 */
+.paper-layer.vertical.layer-3 {
+    z-index: 6;
+    transform: translate(-50%, -50%) rotate(5deg) scale(1.95) translate(-10px, 12px);
+    filter: brightness(0.75) drop-shadow(1px 2px 0px #222) drop-shadow(2px 4px 0px #050505) drop-shadow(30px 40px 35px rgba(0, 0, 0, 0.95));
+}
+
+/* Layer 4 */
+.paper-layer.vertical.layer-4 {
+    z-index: 5;
+    transform: translate(-50%, -50%) rotate(15deg) scale(1.95) translate(10px, 15px);
+    filter: brightness(0.65) drop-shadow(1px 2px 0px #1a1a1a) drop-shadow(2px 4px 0px #000) drop-shadow(35px 45px 35px rgba(0, 0, 0, 0.95));
+}
+
+/* Layer 5 (Bottom) */
+.paper-layer.vertical.layer-5 {
+    z-index: 4;
+    transform: translate(-50%, -50%) rotate(8deg) scale(1.95) translate(-5px, 20px);
+    filter: brightness(0.55) drop-shadow(1px 2px 0px #111) drop-shadow(2px 4px 0px #000) drop-shadow(40px 50px 40px rgba(0, 0, 0, 0.95));
+}
+
+.newspaper-header {
+    font-size: 3.5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    text-align: center;
+    /* Remove old double border */
+    border-bottom: none;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    position: relative;
+    /* For pseudo-element */
+    letter-spacing: 2px;
+    color: rgba(40, 40, 40, 0.6);
+    /* Faded ink */
+    font-family: 'Times New Roman', serif;
+    line-height: 1;
+    filter: blur(4px);
+    /* Very blurry */
+}
+
+/* 2 Dashed Lines for Title */
+.newspaper-header::after {
+    content: "";
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    /* Increased Space between lines */
+    border-top: 2px dashed rgba(30, 30, 30, 0.4);
+    border-bottom: 2px dashed rgba(30, 30, 30, 0.4);
+}
+
+.news-headline {
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    /* Add line below headline */
+    border-bottom: 1px solid rgba(30, 30, 30, 0.4);
+    line-height: 1.1;
+    font-family: 'Times New Roman', serif;
+    color: rgba(30, 30, 30, 0.6);
+    filter: blur(3.5px);
+    /* Very blurry */
+}
+
+.news-subhead {
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 15px;
+    font-style: italic;
+    color: rgba(40, 40, 40, 0.5);
+    border-bottom: 1px solid rgba(40, 40, 40, 0.3);
+    padding-bottom: 5px;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    filter: blur(3px);
+    /* Very blurry */
+}
+
+.news-text {
+    font-size: 0.9rem;
+    text-align: left;
+    line-height: 1.4;
+    font-family: 'Times New Roman', serif;
+    color: rgba(40, 40, 40, 0.5);
+    /* Washed out */
+    filter: blur(2.5px);
+    /* Barely readable */
+}
+
+.vertical-separator {
+    border-right: 1px solid rgba(30, 30, 30, 0.4);
+    padding-right: 15px;
+    margin-right: 15px;
+}
+
+.newspaper-body {
+    display: flex;
+    gap: 40px;
+    flex: 1;
+    overflow: hidden;
+    /* Hide overflow text */
+}
+
+/* Horizontal Card Layout */
+.info-card.horizontal .newspaper-body {
+    flex-direction: row;
+}
+
+/* Vertical Card Layout */
+.info-card.vertical .newspaper-body {
+    flex-direction: row;
+    /* 3 Columns */
+    gap: 15px;
+}
+
+/* Advertisement Styles */
+.main-story-headline {
+    font-size: 2.5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 1;
+    font-family: 'Times New Roman', serif;
+    color: rgba(20, 20, 20, 0.7);
+    margin-bottom: 5px;
+    padding-top: 10px;
+    padding-bottom: 8px;
+    /* Added padding */
+    border-bottom: none;
+    /* Removed default border */
+    position: relative;
+    /* For custom lines */
+    filter: blur(5px);
+    /* Extremely blurred (Mystery Deepens) */
+}
+
+/* Blurry Double Lines below Main Headline */
+.main-story-headline::after {
+    content: "";
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    /* Height for double line spacing */
+    border-top: 3px solid rgba(20, 20, 20, 0.5);
+    border-bottom: 3px solid rgba(20, 20, 20, 0.5);
+    filter: blur(2px);
+    /* Blurry but visible lines */
+}
+
+.column {
+    flex: 1 1 0%;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.column h3 {
+    font-size: 1rem;
+    font-weight: bold;
+    border-bottom: 1px solid rgba(40, 40, 40, 0.5);
+    /* Faded border */
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    color: rgba(30, 30, 30, 0.75);
+    /* Faded text */
+}
+
+/* Censored Text Effect (Blurry) */
+.censored {
+    font-size: 0.8rem;
+    line-height: 1.6em;
+    color: rgba(30, 30, 30, 0.65);
+    /* Visible text color (Faded) */
+    filter: blur(3.5px);
+    /* Blurry effect */
+    user-select: none;
+    opacity: 0.8;
+}
+
+.censored-img {
+    width: 100%;
+    /* Placeholder content */
+    background: #222;
+    /* simple dark background to ensure visibility */
+    border: 1px solid #111;
+    position: relative;
+    overflow: hidden;
+    filter: blur(1.5px) grayscale(0.5);
+    /* Less blur for images so they are visible */
+    opacity: 0.8;
+}
+
+/* Dark Lighting Overlay for Info Cards and Paper Layers */
+/* Shadow Overlay for each card and paper layer */
+.info-card::after,
+.paper-layer::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.6) 60%, rgba(255, 0, 128, 0.08) 100%);
+}
+
+
+
+.shadow-wrapper.horizontal {
+    position: absolute;
+    width: 53vw;
+    /* Decreased by ~1/3 from 80vw */
+    height: 55vh;
+    /* Folded height */
+    top: 105%;
+    /* Pushed down closer to bottom */
+    /* Positioned for bottom half visibility */
+    left: 55%;
+    /* Pushed slightly back leftwards due to scaling */
+    /* Pushed right */
+    transform: translate(-50%, -50%) rotate(-15deg) scale(1.6);
+    /* Enlarged slightly */
+    z-index: 8;
+    box-shadow: -15px -20px 40px rgba(0, 0, 0, 0.85);
+    opacity: 0; /* Hide initially for intro animation */
+    /* Target transform matches keyframe 100% */
+}
+
+.info-card.horizontal {
+    position: relative;
+    /* Override global absolute */
+    top: 0;
+    left: 0;
+    transform: none;
+    /* Inherit everything from wrapper */
+    width: 100%;
+    height: 100%;
+    padding-top: 0;
+    /* Remove top padding for fold */
+
+    /* Crumpled Sides/Bottom, STRAIGHT TOP */
+    clip-path: polygon(
+            /* Top (Straight Fold) */
+            0% 0%, 100% 0%,
+            /* Right */
+            99.5% 20%, 100% 40%, 99.5% 60%, 100% 80%, 99.5% 100%,
+            /* Bottom */
+            80% 99.5%, 60% 100%, 40% 99.5%, 20% 100%, 0% 99.5%,
+            /* Left */
+            0.5% 80%, 0% 60%, 0.5% 40%, 0% 20%);
+}
+
+.info-card.horizontal .newspaper-content {
+    position: absolute;
+    bottom: 40px;
+    /* Match standard padding */
+    left: 40px;
+    right: 40px;
+    height: 110vh;
+    /* Unfolded height */
+    justify-content: flex-end;
+    /* Show bottom half content */
+    border-top: none;
+    /* No border at fold */
+    padding-top: 50px;
+    /* offset for visual balance */
+}
+
+/* Gradient shadow/puff for Horizontal Top Fold */
+.info-card.horizontal::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 120px;
+    /* Puff gradient: Dark crease at top, Highlight below, then transparent */
+    background: linear-gradient(to bottom,
+            rgba(0, 0, 0, 0.6) 0%,
+            rgba(255, 255, 255, 0.2) 30%,
+            /* Puff highlight */
+            transparent 100%);
+    z-index: 5;
+    pointer-events: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.8);
+    /* Sharp crease line */
+}
+
+.column.picture-mode {
+    padding-right: 15px;
+    border: none;
+    border-right: 4px double rgba(30, 30, 30, 0.6);
+    /* Faded separator */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Center vertically */
+    gap: 0;
+    background: transparent;
+}
+
+.column.picture-mode .censored-img {
+    width: 100%;
+    height: 250px;
+    /* Much bigger single image */
+    flex: none;
+    border: 1px solid rgba(30, 30, 30, 0.5);
+    /* Faded border */
+    margin: 0;
+    opacity: 0.9;
+}
+
+.img-caption {
+    font-size: 0.85rem;
+    /* Larger caption */
+    font-family: 'Times New Roman', serif;
+    font-style: italic;
+    color: rgba(40, 40, 40, 0.7);
+    /* Faded caption */
+    margin-top: 15px;
+    margin-bottom: 5px;
+    line-height: 1.3;
+    /* border-bottom removed */
+    padding-bottom: 0;
+    text-align: center;
+    filter: blur(2px);
+}
+
+.image-roll .censored-img {
+    width: 90% !important;
+    margin: 0 auto 0 0 !important;
+}
+
+.image-roll .img-caption {
+    margin-bottom: 20px !important;
+    width: 90%;
+}
+
+.gallery-dots {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    padding: 0 10px;
+    height: 100%;
+}
+
+.g-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: rgba(30, 30, 30, 0.4);
+    transition: all 0.3s ease;
+}
+
+.g-dot.active {
+    background-color: rgba(30, 30, 30, 0.9);
+    transform: scale(1.5);
+}
+
+.info-card.vertical {
+    position: relative;
+    /* Override global absolute */
+    top: 0;
+    left: 0;
+    transform: none;
+    /* Inherit everything from wrapper */
+    width: 100%;
+    height: 100%;
+
+    /* Crumpled Top/Sides, STRAIGHT BOTTOM */
+    clip-path: polygon(
+            /* Top */
+            0% 0%, 20% 0.5%, 40% 0%, 60% 0.5%, 80% 0%, 100% 0.5%,
+            /* Right */
+            99.5% 20%, 100% 40%, 99.5% 60%, 100% 80%, 100% 95%,
+            /* Bottom (Straight Fold) */
+            100% 100%, 0% 100%,
+            /* Left */
+            0.5% 95%, 0% 80%, 0.5% 60%, 0% 40%, 0.5% 20%);
+}
+
+/* --- TEXTURE OVERLAY --- */
+.crumpled-texture {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.6;
+    mix-blend-mode: multiply;
+
+    /* 
+       SVG Turbulence Filter for Paper Grain/Noise
+       + subtle linear gradients for large creases 
+    */
+    background-image:
+        /* Large Crease 1 */
+        linear-gradient(15deg, transparent 40%, rgba(0, 0, 0, 0.08) 45%, transparent 55%),
+        /* Large Crease 2 */
+        linear-gradient(-25deg, transparent 30%, rgba(0, 0, 0, 0.06) 35%, transparent 45%),
+        /* SVG Noise */
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.4'/%3E%3C/svg%3E");
+
+    background-size: cover, cover, 300px 300px;
+    filter: contrast(120%) brightness(1.1);
+    will-change: transform;
+}
+
+.info-card.vertical .newspaper-content {
+    border-bottom: none;
+    /* No border at the fold */
+    position: relative;
+    z-index: 2;
+    /* Content above texture */
+}
+
+/* Gradient shadow to simulate the page folding under AND a puff highlight */
+.info-card.vertical::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 120px;
+    /* Taller area for the effect */
+    /* 
+       Gradient Logic:
+       1. Top (Transparent)
+       2. Middle (White-ish Highlight) -> The "Puff" apex
+       3. Bottom (Dark Shadow) -> The fold crease
+    */
+    background: linear-gradient(to bottom,
+            transparent 0%,
+            rgba(255, 255, 255, 0.15) 60%,
+            /* Subtle highlight puff */
+            rgba(0, 0, 0, 0.5) 100%
+            /* Deep fold shadow */
+        );
+    z-index: 5;
+    pointer-events: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.8);
+    /* Sharp crease line */
+}
+
+/* Shadow Overlay to simulate directional light (Dark Top-Left -> Light Bottom-Right) */
+.ticket-container::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 20;
+    /* On top of ticket content */
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.6) 60%, rgba(255, 0, 128, 0.05) 100%);
+}
+
+/* --- LEFT SIDE (MAIN) --- */
+.ticket-main {
+    flex: 2.5;
+    background-color: #f4f1ea;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZjRmMWVhIiAvPgo8cmVjdCB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSIjZTZlM2RiIiAvPgo8L3N2Zz4=');
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    /* Ensure perforation sits on top correctly or we use mask */
+}
+
+.content-placeholder {
+    color: #333;
+    opacity: 0.15;
+    font-size: 3rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+}
+
+.ticket-jill-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1; /* Sits below the perforation mask */
+}
+
+.perforation {
+    position: absolute;
+    right: -10px;
+    /* Center over the seam */
+    top: 0;
+    height: 100%;
+    width: 20px;
+
+    /* 
+       Complex Gradient for Hole Depth:
+       1. Hole Center (Dark)
+       2. Highlight Rim (Bottom-Right)
+       3. Inner Shadow (Top-Left) keeps the 'cut' look
+    */
+    background-image:
+        radial-gradient(circle at 50% 50%, #050505 3px, transparent 3.5px),
+        /* Highlight Rim (Bottom-Right) */
+        radial-gradient(circle at 55% 55%, rgba(255, 255, 255, 0.2) 4px, transparent 4.5px),
+        /* Inner Shadow (Top-Left) creates the 'cut' look */
+        radial-gradient(circle at 45% 45%, rgba(0, 0, 0, 0.5) 4px, transparent 4.5px);
+
+    background-size: 10px 20px;
+    /* 20px vertical spacing */
+    background-repeat: repeat-y;
+    z-index: 30;
+    /* Above ticket content */
+    opacity: 0.9;
+}
+
+/* --- RIGHT SIDE (NAV) --- */
+.ticket-stub {
+    flex: 1;
+    background-color: #e63946;
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    /* Reduced from 40px */
+    position: relative;
+    box-shadow: inset 5px 0 15px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    contain: layout paint;
+}
+
+/* Decorative Border inside Ticket Stub */
+.ticket-stub::before {
+    content: "";
+    position: absolute;
+    top: 15px;
+    /* Pushed in slightly more to match new rounded corners */
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    pointer-events: none;
+    z-index: 1;
+
+    /* Long Spaced Dots (Dashed Border) */
+    background:
+        /* Top */
+        linear-gradient(to right, #111 15px, transparent 15px) top left / 30px 4px repeat-x,
+        /* Bottom */
+        linear-gradient(to right, #111 15px, transparent 15px) bottom left / 30px 4px repeat-x,
+        /* Left */
+        linear-gradient(to bottom, #111 15px, transparent 15px) top left / 4px 30px repeat-y,
+        /* Right */
+        linear-gradient(to bottom, #111 15px, transparent 15px) top right / 4px 30px repeat-y;
+}
+
+/* --- TOP ROW --- */
+.top-row {
+    position: absolute;
+    top: 25px;
+    right: 40px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    height: 60px;
+    margin: 0;
+    padding: 0;
+    z-index: 10;
+}
+
+.translate-btn {
+    justify-content: flex-start;
+}
+
+.translate-btn svg {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    fill: currentColor;
+}
+
+/* --- NAV LIST --- */
+.nav-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    flex-grow: 1;
+    gap: 30px;
+    /* Reduced from 40px */
+    width: 100%;
+}
+
+.nav-item {
+    text-decoration: none;
+    color: black;
+    text-transform: uppercase;
+    font-weight: 900;
+    line-height: 0.9;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    width: 100%;
+    padding-left: 20px;
+}
+
+/* --- TEXT STYLING --- */
+.nav-text {
+    display: block;
+    transform: scaleX(1.15);
+    transform-origin: left;
+    border-bottom: 4px solid transparent;
+    white-space: nowrap;
+}
+
+/* ================================================================
+   FONT SIZING LOGIC (SHRINK INACTIVE)
+   ================================================================ 
+*/
+
+/* --- CHINESE --- */
+body.lang-zh .nav-text {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 900;
+}
+
+/* 1. Default Inactive (SHRUNK) */
+body.lang-zh .nav-item {
+    font-size: calc(1.3rem + 1.7vw);
+    /* Midpoint */
+    opacity: 1;
+}
+
+/* 2. Active - General */
+body.lang-zh .nav-item.active {
+    font-size: calc(2.7rem + 3.2vw);
+    /* Midpoint */
+}
+
+/* 3. Active - 4-Char Words */
+body.lang-zh .nav-item.active:has([data-key="trailer"]),
+body.lang-zh .nav-item.active:has([data-key="synopsis"]),
+body.lang-zh .nav-item.active:has([data-key="production"]) {
+    font-size: calc(2.2rem + 2.7vw);
+    /* Midpoint */
+}
+
+
+/* --- ENGLISH --- */
+body.lang-en .nav-text {
+    text-shadow: 1px 0 0 currentColor, -1px 0 0 currentColor;
+}
+
+/* 1. Default Inactive (SHRUNK) */
+body.lang-en .nav-item {
+    font-size: calc(1.1rem + 1.25vw);
+    /* Midpoint */
+    opacity: 1;
+}
+
+/* 2. Active - General */
+body.lang-en .nav-item.active {
+    font-size: calc(2.0rem + 2.2vw);
+    /* Midpoint */
+}
+
+/* 3. Active - Long Words (Synopsis) */
+body.lang-en .nav-item.active:has([data-key="synopsis"]) {
+    font-size: calc(1.6rem + 1.8vw);
+    /* Midpoint */
+}
+
+
+/* --- HOVER STATE --- */
+.nav-item:hover {
+    color: white;
+    transform: translateX(5px);
+}
+
+.nav-item:hover .nav-text {
+    border-bottom: 4px solid white;
+}
+
+.nav-item:hover .arrow-icon {
+    fill: white;
+}
+
+/* ================================================================
+   ARROW STYLE
+   ================================================================ 
+*/
+
+.arrow-icon {
+    width: 0.85em;
+    height: 0.85em;
+    margin-left: 15px;
+    fill: black;
+    flex-shrink: 0;
+    transition: margin-left 0.3s ease;
+    align-self: center;
+    transform: translateY(calc(0.2em - 2px));
+}
+
+/* ================================================================
+   ARROW SPACING
+   ================================================================ 
+*/
+
+/* General Active */
+.nav-item.active .arrow-icon {
+    margin-left: 60px;
+}
+
+
+/* --- CHINESE SPACING --- */
+body.lang-zh .nav-text[data-key="synopsis"]+.arrow-icon,
+body.lang-zh .nav-text[data-key="production"]+.arrow-icon {
+    margin-left: 25px;
+}
+
+body.lang-zh .nav-item.active .nav-text[data-key="synopsis"]+.arrow-icon,
+body.lang-zh .nav-item.active .nav-text[data-key="production"]+.arrow-icon,
+body.lang-zh .nav-item.active .nav-text[data-key="trailer"]+.arrow-icon {
+    margin-left: 45px;
+}
+
+body.lang-zh .nav-text[data-key="home"]+.arrow-icon {
+    margin-left: 5px;
+}
+
+body.lang-zh .nav-item.active .nav-text[data-key="home"]+.arrow-icon {
+    margin-left: 25px;
+}
+
+/* --- ENGLISH SPACING --- */
+body.lang-en .nav-item.active .nav-text[data-key="home"]+.arrow-icon,
+body.lang-en .nav-item.active .nav-text[data-key="production"]+.arrow-icon {
+    margin-left: 35px;
+}
+
+body.lang-en .nav-text[data-key="trailer"]+.arrow-icon,
+body.lang-en .nav-text[data-key="synopsis"]+.arrow-icon {
+    margin-left: 30px;
+}
+
+body.lang-en .nav-item.active .nav-text[data-key="trailer"]+.arrow-icon,
+body.lang-en .nav-item.active .nav-text[data-key="synopsis"]+.arrow-icon {
+    margin-left: 50px;
+}
+
+/* ================================================================
+   SITE ICON
+   ================================================================ 
+*/
+.site-icon {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    width: 150px;
+    height: auto;
+    z-index: 100;
+    pointer-events: none;
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+    opacity: 0.3;
+}
+
+/* Old Mute Button styling removed due to conflict with animations */
+
+/* --- ANIMATION --- */
+.fade-text {
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scaleX(1.15) translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scaleX(1.15) translateY(0);
+    }
+}
+
+/* ================================================================
+   BARCODE & SERIAL NUMBER
+   ================================================================ 
+*/
+.barcode-group {
+    position: absolute;
+    bottom: 28px;
+    right: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0.85;
+    mix-blend-mode: multiply;
+    max-width: 48%;
+}
+
+.barcode {
+    width: 140px;
+    height: 45px;
+    background: linear-gradient(to right,
+            #000 0%, #000 2%, transparent 2%, transparent 3%,
+            #000 3%, #000 6%, transparent 6%, transparent 7%,
+            #000 7%, #000 9%, transparent 9%, transparent 10%,
+            #000 10%, #000 13%, transparent 13%, transparent 14%,
+            #000 14%, #000 18%, transparent 18%, transparent 20%,
+            #000 20%, #000 22%, transparent 22%, transparent 23%,
+            #000 23%, #000 26%, transparent 26%, transparent 29%,
+            #000 29%, #000 30%, transparent 30%, transparent 31%,
+            #000 31%, #000 33%, transparent 33%, transparent 36%,
+            #000 36%, #000 40%, transparent 40%, transparent 42%,
+            #000 42%, #000 45%, transparent 45%, transparent 47%,
+            #000 47%, #000 50%, transparent 50%, transparent 52%,
+            #000 52%, #000 56%, transparent 56%, transparent 58%,
+            #000 58%, #000 62%, transparent 62%, transparent 65%,
+            #000 65%, #000 68%, transparent 68%, transparent 70%,
+            #000 70%, #000 73%, transparent 73%, transparent 75%,
+            #000 75%, #000 79%, transparent 79%, transparent 81%,
+            #000 81%, #000 85%, transparent 85%, transparent 86%,
+            #000 86%, #000 89%, transparent 89%, transparent 92%,
+            #000 92%, #000 95%, transparent 95%, transparent 97%,
+            #000 97%, #000 100%);
+}
+
+.serial-number {
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 10px;
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #111;
+    margin-top: 4px;
+}
+
+/* ================================================================
+   STUB DECORATIONS
+   ================================================================ 
+*/
+.stub-deco-top-left {
+    position: absolute;
+    top: 40px;
+    left: 45px;
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-left: 1px;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.ticket-label {
+    font-size: 1.15rem;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: 1px;
+    color: #111;
+    margin-bottom: 0;
+}
+
+.numbers-box {
+    display: flex;
+    border-top: 3px solid #111;
+    border-bottom: 3px solid #111;
+    padding: 3px 0;
+}
+
+.numbers-box span {
+    font-family: 'Consolas', monospace;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #111;
+    padding: 0 8px;
+    border-right: 2px solid #111;
+}
+
+.numbers-box span:last-child {
+    border-right: none;
+}
+
+.stub-deco-text {
+    position: absolute;
+    bottom: 37px;
+    left: 46px;
+    font-size: 2.2rem;
+    font-weight: 300;
+    color: #111;
+    text-transform: capitalize;
+    font-family: 'Great Vibes', cursive;
+    opacity: 0.8;
+    z-index: 2;
+    pointer-events: none;
+    transform: rotate(0deg);
+}
+
+.wipe-in {
+    animation: wipeInAnim 0.35s ease-out forwards;
+}
+
+.wipe-out {
+    animation: wipeOutAnim 0.35s ease-out forwards;
+}
+
+@keyframes wipeInAnim {
+    0% { clip-path: inset(0 100% 0 0); opacity: 0; }
+    50% { opacity: 1; }
+    100% { clip-path: inset(0 0 0 0); opacity: 1; }
+}
+
+@keyframes wipeOutAnim {
+    0% { clip-path: inset(0 0 0 0); opacity: 1; }
+    50% { opacity: 1; }
+    100% { clip-path: inset(0 0 0 100%); opacity: 0; }
+}
+
+.stub-deco-bottom-left {
+    position: absolute;
+    bottom: 37px;
+    left: 46px;
+    height: 50px;
+    width: auto;
+    max-width: 48%;
+    opacity: 0.8;
+    filter: brightness(0);
+    /* Make it black */
+    pointer-events: none;
+    z-index: 2;
+}
+
+.lang-indicator {
+    font-weight: 900;
+    color: #111;
+    opacity: 0.9;
+    letter-spacing: 3px;
+    margin-top: -5px !important;
+    transform: scaleX(1.4);
+    -webkit-text-stroke: 1px #111;
+}
+
+body.lang-zh .lang-indicator {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 1.1rem;
+}
+
+body.lang-en .lang-indicator {
+    font-family: 'Arial Black', 'Helvetica Neue', sans-serif;
+    text-shadow: 1px 0 0 currentColor, -1px 0 0 currentColor;
+    font-size: 1rem;
+}
+
+
+/* Raindrop overlay removed */
+
+/* ================================================================
+   LIGHTNING EFFECT
+   ================================================================ 
+*/
+.lightning-flash {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    /* Gradient from bottom-right (where the window/neon is) to top-left */
+    /* Dimmer flash (max 0.4 opacity on strongest point), pushed all the way across the page */
+    background: linear-gradient(315deg, rgba(100, 150, 255, 0.4) 0%, rgba(80, 120, 255, 0.2) 60%, rgba(50, 80, 200, 0.05) 100%);
+    z-index: 1500;
+    pointer-events: none;
+    opacity: 0;
+    mix-blend-mode: color-dodge;
+}
+
+@keyframes lightningStrike {
+    0% {
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 1;
+        /* Hits peak quickly */
+    }
+
+    100% {
+        opacity: 0;
+        /* Fades out over the rest of the duration given by JS */
+    }
+}
+
+/* ================================================================
+   MUTE BUTTON & CREDIT ANIMATIONS
+   ================================================================ 
+*/
+.mute-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    opacity: 0.3;
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0;
+    margin: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.mute-btn:hover {
+    opacity: 0.9;
+    transform: scale(1.02);
+}
+
+.mute-text-wrapper {
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    max-width: 0;
+    /* Extremely smooth and lazy slider push transition */
+    transition: max-width 1.2s cubic-bezier(0.25, 1, 0.3, 1);
+}
+
+.mute-btn:hover .mute-text-wrapper {
+    max-width: 300px;
+}
+
+/* Text slides out from zero width/hidden to full width */
+.mute-text {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    font-weight: normal;
+    letter-spacing: 2px;
+    font-style: italic;
+    color: white;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px) translateX(-30px);
+    opacity: 0;
+    display: inline-block;
+    white-space: nowrap;
+    padding-right: 12px; /* Space before the SVG button */
+    /* Must match max-width slow reveal timing securely */
+    transition: transform 1.2s cubic-bezier(0.25, 1, 0.3, 1), opacity 0.8s ease 0.15s;
+}
+
+/* On hover of the button, the text reveals itself */
+.mute-btn:hover .mute-text {
+    transform: translateY(-2px) translateX(0);
+    opacity: 1;
+}
+
+/* Language toggle right-side slide-in variant */
+.lang-text-wrapper {
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    max-width: 0;
+    transition: max-width 1.2s cubic-bezier(0.25, 1, 0.3, 1);
+}
+.translate-btn:hover .lang-text-wrapper {
+    max-width: 300px;
+}
+.lang-hover-text {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 10px;
+    font-weight: normal;
+    letter-spacing: 2px;
+    font-style: italic;
+    color: white;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px) translateX(-30px);
+    opacity: 0;
+    display: inline-block;
+    white-space: nowrap;
+    padding-left: 0;
+    padding-right: 12px;
+    transition: transform 1.2s cubic-bezier(0.25, 1, 0.3, 1), opacity 0.8s ease 0.15s;
+}
+.translate-btn:hover .lang-hover-text {
+    transform: translateY(-2px) translateX(0);
+    opacity: 1;
+}
+
+.sound-credit {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.75rem;
+    font-weight: 300;
+    font-style: italic;
+    color: #fff;
+    opacity: 0.2; /* Slightly increased visibility */
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+    margin-left: 4px;
+    transition: opacity 0.3s ease;
+    white-space: nowrap;
+}
+
+/* ================================================================
+   INTRO SCREEN
+   ================================================================ 
+*/
+.intro-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000;
+    z-index: 99999;
+    animation: introBackgroundFade 1.5s cubic-bezier(0.5, 0, 0.2, 1) 2s forwards;
+    pointer-events: none;
+}
+
+.intro-content {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.intro-logo {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    opacity: 0.8;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+    animation: introLogoTravel 1.5s cubic-bezier(0.5, 0, 0.2, 1) 2s forwards;
+}
+
+.intro-text {
+    position: absolute;
+    top: calc(45% + 75px);
+    left: calc(50% + 140px);
+    transform: translate(-50%, -50%);
+    font-size: 2.8rem;
+    font-weight: 300;
+    letter-spacing: 2px;
+    color: #fff;
+    text-transform: capitalize;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+    font-family: 'Great Vibes', cursive;
+    animation: introTextTravel 1.5s cubic-bezier(0.5, 0, 0.2, 1) 2s forwards;
+    white-space: nowrap;
+}
+
+.intro-subtext {
+    position: absolute;
+    top: 65%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.2rem;
+    font-weight: 300;
+    letter-spacing: 12px;
+    color: #fff;
+    text-transform: capitalize;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    animation: introTextFadeOut 1.5s cubic-bezier(0.5, 0, 0.2, 1) 2s forwards;
+    white-space: nowrap;
+}
+
+@keyframes introBackgroundFade {
+    0% { background-color: rgba(0, 0, 0, 1); }
+    100% { background-color: rgba(0, 0, 0, 0); }
+}
+
+@keyframes introLogoTravel {
+    0% {
+        top: 45%;
+        left: 50%;
+        width: 500px;
+        transform: translate(-50%, -50%);
+        opacity: 0.8;
+        filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+    }
+    100% {
+        top: 60px;
+        left: 30px;
+        width: 150px;
+        transform: translate(0, 0);
+        opacity: 0.4;
+        filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.0));
+    }
+}
+
+@keyframes introTextTravel {
+    0% {
+        top: calc(45% + 75px);
+        left: calc(50% + 140px);
+        font-size: 2.8rem;
+        transform: translate(-50%, -50%);
+        opacity: 0.8;
+    }
+    100% {
+        top: 105px;
+        left: 170px;
+        font-size: 1.4rem;
+        transform: translate(-50%, -50%);
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+@keyframes introBgFadeOutText {
+    0% { opacity: 1; }
+    100% { opacity: 0; visibility: hidden; }
+}
+
+@keyframes introBgFadeOutText {
+    0% { opacity: 1; }
+    100% { opacity: 0; visibility: hidden; }
+}
+
+@keyframes introTextFadeOut {
+    0% { opacity: 1; }
+    30% { opacity: 0; }
+    100% { opacity: 0; visibility: hidden; }
+}
+
+/* ================================================================
+   VIDEO WINDOW (NEWSPAPER CUTOUT)
+   ================================================================ 
+*/
+.video-window {
+    position: absolute;
+    top: -50vh; /* Hidden top left */
+    left: -50vw;
+    transform: translate(-50%, -50%) rotate(-15deg);
+    width: 65vw;
+    max-width: 1100px;
+    background-color: #fdfdfd;
+    background-image: linear-gradient(135deg, #fdfdfd, #eaeaea);
+    padding: 20px 20px 80px 20px; /* Photo paper style */
+    box-shadow: -15px 25px 35px rgba(0, 0, 0, 0.85); /* Drop shadow on pseudo-polaroid */
+    z-index: 10; /* Lower z-index so it sits UNDER the lighting and rain */
+    transition: top 1.2s cubic-bezier(0.2, 0.8, 0.2, 1), left 1.2s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    
+    clip-path: none; /* No torn edges */
+    border: 1px solid #ddd;
+}
+
+.video-window.slide-in {
+    top: 45%; 
+    left: 45%; /* Slightly off center to match scene composition */
+    transform: translate(-50%, -50%) rotate(-3deg);
+}
+
+.video-container {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 3px solid rgba(20, 20, 20, 0.4);
+    position: relative;
+    background: #000;
+}
+
+.close-btn {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: transparent;
+    border: none;
+    color: rgba(30, 30, 30, 0.7);
+    cursor: pointer;
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+}
+.close-btn svg {
+    width: 100%;
+    height: 100%;
+}
+.close-btn:hover {
+    color: #000;
+}
+
+@media (max-width: 1400px) {
+    .video-window { width: 85vw; }
+}
+@media (max-width: 900px) {
+    .video-window { width: 95vw; padding: 15px; }
+    .close-btn { top: -10px; right: -10px; }
+}
+
+/* ================================================================
+   CONTENT WINDOW (NEWSPAPER STYLE)
+   ================================================================ 
+*/
+.content-window {
+    position: absolute;
+    top: -60vh; /* Hidden top */
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(5deg);
+    width: 60vw;
+    max-width: 1000px;
+    height: 60vh;
+    background-color: #8c8c8c;
+    background-image: linear-gradient(135deg, #8c8c8c 0%, #4a4a4a 100%);
+    box-shadow: -15px 25px 35px rgba(0, 0, 0, 0.85);
+    z-index: 10; /* Lowered so rain drops and lighting cast shadows over it */
+    transition: top 1.2s cubic-bezier(0.2, 0.8, 0.2, 1), left 1.2s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    border: none;
+    padding: 0;
+}
+
+/* Jagged Cutout Effects matching the original newspapers */
+.content-window.horizontal-shape {
+    clip-path: polygon(0% 0%, 20% 0.5%, 40% 0%, 60% 0.5%, 80% 0%, 100% 0.5%,
+            99.5% 20%, 100% 40%, 99.5% 60%, 100% 80%, 99.5% 100%,
+            80% 99.5%, 60% 100%, 40% 99.5%, 20% 100%, 0% 99.5%,
+            0.5% 80%, 0% 60%, 0.5% 40%, 0% 20%);
+}
+
+.content-window.vertical-shape {
+    clip-path: polygon(
+            0% 0%, 20% 0.5%, 40% 0%, 60% 0.5%, 80% 0%, 100% 0.5%,
+            99.5% 20%, 100% 40%, 99.5% 60%, 100% 80%, 100% 95%,
+            100% 100%, 0% 100%,
+            0.5% 95%, 0% 80%, 0.5% 60%, 0% 40%, 0.5% 20%);
+}
+
+/* Slide in Wipe Unblur effect for filler text in popups */
+@keyframes unblurAndWipe {
+    0% { clip-path: inset(0 100% 0 0); opacity: 0; }
+    20% { opacity: 1; }
+    100% { clip-path: inset(0 0 0 0); opacity: 1; }
+}
+
+/* --- OVERRIDES FOR TEXT UNBLURRING & SPACING & SIZING --- */
+.newspaper-content,
+.newspaper-header,
+.news-headline,
+.news-subhead,
+.news-text,
+.censored,
+.censored-img,
+.img-caption,
+.main-story-headline,
+.main-story-headline::after {
+    filter: none !important;
+}
+
+.sfx-text {
+    word-spacing: 5px;
+    letter-spacing: 1.5px;
+}
+.news-headline {
+    word-spacing: 5px;
+    letter-spacing: 1.5px;
+}
+.img-caption {
+    word-spacing: 5px;
+    letter-spacing: 1px;
+}
+
+#synopsis-window.slide-in {
+    transform: translate(-50%, -50%) rotate(-1deg) scale(1.3) !important;
+}
+
+.content-window.slide-in .newspaper-content .censored,
+.content-window.slide-in .newspaper-content .news-text,
+.content-window.slide-in .newspaper-content .news-headline,
+.content-window.slide-in .newspaper-content .news-subhead,
+.content-window.slide-in .newspaper-content .img-caption,
+.content-window.slide-in .newspaper-content .censored-img {
+    animation: unblurAndWipe 1.8s cubic-bezier(0.25, 1, 0.5, 1) both;
+    animation-delay: 0.9s; /* Wait for sliding window to mostly settle before wiping text in */
+}
+
+/* Thicker separating border for columns */
+.thick-sep {
+    border-right: 2.5px solid rgba(30, 30, 30, 0.8) !important;
+    padding-right: 30px !important;
+    margin-right: 15px !important;
+}
+
+/* Decrease rain density globally when any sliding window is active */
+body:has(.content-window.slide-in) .rain-container,
+body:has(.content-window.slide-in) .fast-rain-container,
+body:has(.content-window.slide-in) .static-rain-container {
+    opacity: 0.4 !important;
+    transition: opacity 1.5s ease;
+}
+
+.content-window.slide-in {
+    top: 50%; 
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-1deg);
+}
+
+.content-window .close-btn {
+    top: -5px;
+    right: -5px;
+    background: transparent;
+    border: none;
+    color: rgba(30, 30, 30, 0.7);
+    cursor: pointer;
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+}
+.content-window .close-btn:hover {
+    color: #111;
+}
+
+/* ================================================================
+   SFX NOTIFICATION
+   ================================================================ 
+*/
+.sfx-notification {
+    position: absolute;
+    bottom: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: transparent;
+    border: none;
+    padding: 0;
+    z-index: 1000;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 300;
+    color: #fff;
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.sfx-notification.show {
+    animation: notifyFloatIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, 
+               notifySwing 2s ease-in-out 0.8s forwards, 
+               notifyFadeOut 1s ease 3.5s forwards;
+}
+
+@keyframes notifyFloatIn {
+    0% { bottom: -50px; opacity: 0; transform: translateX(-50%) rotate(0deg); }
+    100% { bottom: 50px; opacity: 1; transform: translateX(-50%) rotate(2deg); }
+}
+
+@keyframes notifySwing {
+    0% { transform: translateX(-50%) rotate(2deg); }
+    25% { transform: translateX(-50%) rotate(-2deg); }
+    50% { transform: translateX(-50%) rotate(1deg); }
+    75% { transform: translateX(-50%) rotate(-1deg); }
+    100% { transform: translateX(-50%) rotate(0deg); }
+}
+
+@keyframes notifyFadeOut {
+    0% { bottom: 50px; opacity: 1; transform: translateX(-50%) rotate(0deg); }
+    100% { bottom: 70px; opacity: 0; transform: translateX(-50%) rotate(0deg); }
+}

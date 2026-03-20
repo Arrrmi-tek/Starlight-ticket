@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Starlight Ticket | 星光航班</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="lang-en">
+    <!-- Intro Black Screen Overlay -->
+    <div class="intro-screen" id="intro-screen">
+        <div class="intro-content">
+            <img src="images/動畫名稱.png" alt="Starlight Ticket Logo" class="intro-logo" id="intro-logo">
+            <div class="intro-text">Starlight Ticket</div>
+            <div class="intro-subtext">A Short Animation</div>
+        </div>
+    </div>
+
+    <!-- Invisible Fullscreen Shadow Caster -->
+
+    <!-- Raindrops sliding on glass (Behind shadows, within the window area) -->
+    <div id="rain-layer" class="rain-container"></div>
+    <div id="fast-rain-layer" class="fast-rain-container"></div>
+    <div id="static-rain-layer" class="static-rain-container"></div>
+
+    <!-- Static dark edges that never flicker -->
+    <div class="vignette-overlay"></div>
+
+    <div class="window-frame-effect"></div>
+    <div class="window-floor"></div>
+
+    <!-- Ticket container moved below the newspaper layer so it naturally sits on top without forcing high z-indexes -->
+
+    <div class="info-wrapper">
+        <!-- Horizontal Newspaper Stack -->
+        <!-- Horizontal Newspaper Stack removed -->
+        <div class="shadow-wrapper horizontal">
+            <div class="info-card horizontal">
+                <div class="crumpled-texture"></div>
+                <div class="newspaper-content">
+                    <div class="newspaper-header">NEWS</div>
+                    <div class="newspaper-body">
+                        <!-- Column 1: Single Picture Mode -->
+                        <!-- Column 1: Picture Mode -->
+                        <div class="column picture-mode" style="justify-content: flex-start; padding-bottom: 0;">
+                            <!-- Top picture -->
+                            <div style="z-index: 1;">
+                                <div class="censored-img" style="height: 180px; border: 3px solid #eee;"></div>
+                                <div class="img-caption">Fig 1. Initial anomaly tracking.</div>
+                            </div>
+                            <!-- Bottom picture -->
+                            <div style="z-index: 2; margin-top: 15px;">
+                                <div class="censored-img" style="height: 220px; border: 3px solid #eee;"></div>
+                                <div class="img-caption">Fig 2. Analysis of the noise pattern.</div>
+                            </div>
+                        </div>
+
+                        <!-- Column 2 removed for 1/3 width reduction -->
+
+                        <!-- Column 2: Log Text -->
+                        <div class="column vertical-separator"
+                            style="justify-content: flex-start; display: flex; flex-direction: column;">
+                            <div class="news-headline" style="margin-top: 0;">OBSERVATION LOG</div>
+                            <p class="censored news-text">
+                                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
+                                laudantium,
+                                totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto.
+                            </p>
+                            <p class="censored news-text">
+                                Beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit
+                                aspernatur
+                                aut
+                                odit aut fugit, sed quia consequuntur magni dolores eos sequi nesciunt.
+                            </p>
+                            <div class="censored-img" style="height: 120px; margin-top: 10px; margin-bottom: 10px;">
+                            </div>
+                            <p class="censored news-text">
+                                Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci
+                                velit.
+                            </p>
+                            <p class="censored news-text">
+                                Excepteur sint occaecat cupidatat non proident.
+                            </p>
+                        </div>
+
+                        <!-- Column 3: Text -->
+                        <div class="column">
+                            <div class="news-headline" style="margin-top: 0;">UNIDENTIFIED OBJECT</div>
+                            <p class="censored news-text">
+                                Sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde
+                                omnis iste natus error sit voluptatem accusantium doloremque laudantium.
+                            </p>
+                            <p class="censored news-text">
+                                Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
+                                consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
+                            </p>
+                            <div class="censored-img" style="height: 60px; margin-top: 5px; margin-bottom: 10px;"></div>
+                            <p class="censored news-text">
+                                Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci
+                                velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam.
+                            </p>
+                            <p class="censored news-text">
+                                Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit
+                                laboriosam,
+                                nisi ut aliquid ex ea commodi consequatur?
+                            </p>
+                            <p class="censored news-text">
+                                Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil
+                                molestiae.
+                            </p>
+                            <p class="censored news-text">
+                                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                                mollit
+                                anim id est laborum.
+                            </p>
+                            <p class="censored news-text">
+                                Lorem ipsum dolor sit amet consectetur adipiscing elit.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vertical Newspaper Stack -->
+        <!-- Vertical Newspaper Stack removed -->
+        <div class="shadow-wrapper vertical">
+            <div class="info-card vertical">
+                <div class="crumpled-texture"></div>
+                <div class="newspaper-content">
+                    <div class="newspaper-header">THE CHRONICLE</div>
+                    <div class="main-story-headline">MYSTERY DEEPENS</div>
+                    <div class="news-subhead">STRANGE SIGNALS CONFIRMED</div>
+                    <div class="newspaper-body">
+                        <!-- Column 1 -->
+                        <div class="column vertical-separator">
+                            <p class="censored news-text">
+                                At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium
+                                voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint
+                                occaecati
+                                cupiditate non provident.
+                            </p>
+                            <div class="censored-img"
+                                style="height: 120px; width: 85%; margin: 10px auto; transform: rotate(-1deg);"></div>
+                            <p class="censored news-text">
+                                Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum
+                                fuga.
+                                Et harum quidem rerum facilis est et expedita distinctio.
+                            </p>
+                            <p class="censored news-text">
+                                Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit.
+                            </p>
+                            <p class="censored news-text">
+                                Omnis voluptas assumenda est, omnis dolor repellendus.
+                            </p>
+                        </div>
+
+                        <!-- Column 2 -->
+                        <div class="column vertical-separator">
+                            <div class="news-headline">CITY ON ALERT</div>
+                            <p class="censored news-text">
+                                Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus
+                                id
+                                quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor
+                                repellendus.
+                            </p>
+                            <div class="censored-img"
+                                style="height: 90px; width: 100%; margin: 5px 0; transform: rotate(1deg);"></div>
+                            <p class="censored news-text">
+                                Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe
+                                eveniet
+                                ut et voluptates repudiandae sint et molestiae non recusandae.
+                            </p>
+                            <p class="censored news-text">
+                                Itaque earum rerum hic tenetur a sapiente delectus.
+                            </p>
+                            <div class="censored-img" style="height: 60px; width: 100%; margin: 5px 0;"></div>
+                            <p class="censored news-text">
+                                Aut reiciendis voluptatibus maiores alias consequatur.
+                            </p>
+                        </div>
+
+                        <!-- Column 3 -->
+                        <div class="column">
+                            <p class="censored news-text">
+                                Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus
+                                maiores
+                                alias consequatur aut perferendis doloribus asperiores repellat.
+                            </p>
+                            <div class="censored-img" style="height: 180px; margin-top: 10px; margin-bottom: 10px;">
+                            </div>
+                            <div class="img-caption">Fig 3. Witness sketch</div>
+                            <p class="censored news-text">
+                                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium.
+                            </p>
+                            <p class="censored news-text">
+                                Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.
+                            </p>
+                            <div class="censored-img" style="height: 50px; margin-top: 10px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ticket container moved here properly, so it physically sits ON TOP of all newspapers in the DOM order without needing massive z-indexes -->
+    <div class="ticket-container">
+
+        <div class="ticket-main">
+            <img src="images/jill_room.png" alt="Jill" class="ticket-jill-img">
+            <div class="background-radial"></div>
+            <div class="perforation"></div>
+        </div>
+
+        <div class="ticket-stub">
+
+            <div class="stub-deco-top-left">
+                <div class="ticket-label">TICKET</div>
+                <div class="numbers-box">
+                    <span>8492</span>
+                    <span>1048</span>
+                    <span>5923</span>
+                </div>
+            </div>
+
+            <!-- Removed inner top-row element -->
+
+            <ul class="nav-list">
+                <li class="direct-entry-header" style="width: 100%; margin-bottom: -15px;">
+                    <div
+                        style="font-size: 0.95rem; font-weight: 900; text-transform: uppercase; color: #111; text-shadow: 1px 0 0 currentColor, -1px 0 0 currentColor; text-align: left; margin-bottom: 5px; opacity: 0.9; letter-spacing: 1px;">
+                        direct-entry ticket</div>
+                    <div
+                        style="border-top: 3px solid #222; border-bottom: 3px solid #222; height: 12px; margin-bottom: 0px; width: 100%;">
+                    </div>
+                </li>
+                <li>
+                    <a href="#" class="nav-item active highlight-btn" id="btn-trailer-highlight">
+                        <span class="nav-text" data-key="watchAnim">Watch The&#10;Animation</span>
+                        <svg class="arrow-icon" viewBox="0 0 24 24">
+                            <path d="M19 9h-2v6.59L5.41 4 4 5.41 15.59 17H9v2h10V9z" />
+                        </svg>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-item" id="btn-synopsis">
+                        <span class="nav-text" data-key="synopsis">SYNOPSIS</span>
+                        <svg class="arrow-icon" viewBox="0 0 24 24">
+                            <path d="M19 9h-2v6.59L5.41 4 4 5.41 15.59 17H9v2h10V9z" />
+                        </svg>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-item" id="btn-gallery">
+                        <span class="nav-text" data-key="gallery">GALLERY</span>
+                        <svg class="arrow-icon" viewBox="0 0 24 24">
+                            <path d="M19 9h-2v6.59L5.41 4 4 5.41 15.59 17H9v2h10V9z" />
+                        </svg>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-item" id="btn-team">
+                        <span class="nav-text" data-key="production">TEAM</span>
+                        <svg class="arrow-icon" viewBox="0 0 24 24">
+                            <path d="M19 9h-2v6.59L5.41 4 4 5.41 15.59 17H9v2h10V9z" />
+                        </svg>
+                    </a>
+                </li>
+            </ul>
+
+            <img src="images/動畫名稱.png" class="stub-deco-bottom-left" alt="Brand Icon" id="ticket-logo-img">
+            <div class="stub-deco-text" id="ticket-logo-text" style="display: none;">Starlight Ticket</div>
+
+            <div class="barcode-group">
+                <div class="barcode"></div>
+                <div class="serial-number">No. 8842-0104</div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Sound Controls and Credits grouped together for alignment -->
+    <div
+        style="position: fixed; bottom: 30px; left: 30px; z-index: 9999; display: flex; flex-direction: column; align-items: flex-start; gap: 15px;">
+
+        <button class="mute-btn translate-btn" onclick="toggleLanguage()" title="Switch Language"
+            style="display: flex; flex-direction: row; align-items: center;">
+            <div class="lang-text-wrapper">
+                <span class="lang-hover-text" data-key="changeLang">Change language</span>
+            </div>
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
+                <path
+                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+            </svg>
+            <span class="lang-indicator fade-text"
+                style="font-size: 0.95rem; font-weight: bold; text-shadow: 1px 1px 3px rgba(0,0,0,0.9); font-style: normal; margin-left: 8px; color: white;">EN</span>
+        </button>
+
+        <button id="mute-btn" onclick="toggleMute()" class="mute-btn" title="Toggle Sound">
+            <div class="mute-text-wrapper">
+                <span class="mute-text fade-text" data-key="mute">Mute lightning and rain SFX</span>
+            </div>
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
+                <path
+                    d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+            </svg>
+        </button>
+
+        <div class="sound-credit">
+            sound effects courtesy of Pixabay.com
+        </div>
+    </div>
+
+    <!-- Video Window Overlay -->
+    <div id="video-window" class="video-window">
+        <button id="close-video-btn" class="close-btn" title="Close Video">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+            </svg>
+        </button>
+        <div class="video-container">
+            <iframe id="youtube-player" width="100%" height="100%"
+                src="https://www.youtube.com/embed/TWo91PrbsUc?enablejsapi=1&autoplay=0&mute=0&controls=1"
+                title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <!-- Synopsis Window Overlay (New Auto-moving Carousel) -->
+    <div id="synopsis-window" class="content-window horizontal-shape" style="width: 63vw; height: 51vh;">
+        <button id="close-synopsis-btn" class="close-btn" title="Close Synopsis"
+            style="top: 10px; right: 10px; z-index: 20;">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+            </svg>
+        </button>
+        <div class="newspaper-content" style="height: 100%; overflow-y: auto;">
+            <div class="newspaper-header" data-key="synopsis"
+                style="margin-bottom: 30px; padding-bottom: 20px; font-weight: 900; filter: none !important;">SYNOPSIS
+            </div>
+            <div class="newspaper-body" style="height: 100%;">
+                <div class="column picture-mode thick-sep"
+                    style="flex: 3; justify-content: flex-start; padding-bottom: 0;">
+                    <div class="carousel-container"
+                        style="width: 100%; height: auto; aspect-ratio: 16 / 9; position: relative; overflow: hidden; border: 3px solid #eee;">
+                        <div class="carousel-slide active"
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('images/jill_room.png') center/cover; opacity: 1; transition: opacity 1.5s ease;">
+                        </div>
+                        <div class="carousel-slide"
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #444; opacity: 0; transition: opacity 1.5s ease; display: flex; align-items: center; justify-content: center; color: white;">
+                            CAROUSEL IMAGE 2</div>
+                        <div class="carousel-slide"
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #666; opacity: 0; transition: opacity 1.5s ease; display: flex; align-items: center; justify-content: center; color: white;">
+                            CAROUSEL IMAGE 3</div>
+                    </div>
+                    <div class="img-caption" data-key="synopsisDesc"
+                        style="margin-top: 10px; border-bottom: 2.5px solid #222; padding-bottom: 5px;">Fig 1: Exploring
+                        anomalies.</div>
+                </div>
+                <div class="column"
+                    style="flex: 2; justify-content: flex-start; display: flex; flex-direction: column;">
+                    <div class="news-headline" data-key="synopsisDescTitle"
+                        style="margin-top: 0; border-bottom: 2.5px solid #222; white-space: pre-wrap; line-height: 1.2;">
+                        The main&#10;point is...</div>
+                    <p class="censored news-text">
+                        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
+                        laudantium,
+                        totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto.
+                    </p>
+                    <p class="censored news-text">
+                        Beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur
+                        aut odit aut fugit, sed quia consequuntur magni dolores eos sequi nesciunt.
+                    </p>
+                    <p class="censored news-text">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam nec mi vulputate, luctus nunc
+                        a,
+                        dignissim felis. Pellentesque mattis scelerisque justo non consequat.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gallery Window Overlay (Previously Synopsis) -->
+    <div id="gallery-window" class="content-window horizontal-shape" style="width: 60vw; height: 60vh;">
+        <button id="close-gallery-btn" class="close-btn" title="Close Gallery"
+            style="top: 10px; right: 10px; z-index: 20;">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+            </svg>
+        </button>
+        <div class="newspaper-content" style="height: 100%; overflow-y: auto;">
+            <div class="newspaper-header" data-key="gallery"
+                style="margin-bottom: 30px; padding-bottom: 20px; font-weight: 900; filter: none !important;">GALLERY
+            </div>
+            <div class="newspaper-body" style="height: 100%;">
+                <!-- Column 1: Image Roll -->
+                <div class="column picture-mode image-roll"
+                    style="flex: 6.5; justify-content: flex-start; padding-bottom: 0; padding-top: 50px; overflow-y: scroll; scroll-snap-type: y mandatory; height: 100%; scrollbar-width: none; -ms-overflow-style: none;">
+                    <style>
+                        .image-roll::-webkit-scrollbar {
+                            display: none;
+                        }
+                    </style>
+                    <div class="snap-img-container"
+                        style="scroll-snap-align: center; cursor: pointer; height: 90%; flex-shrink: 0; display: flex; flex-direction: column;">
+                        <div class="censored-img"
+                            style="width: 100%; height: auto; aspect-ratio: 16 / 9; border: 3px solid #eee; background-image: url('images/jill_room.png'); background-size: cover; background-position: center; position: relative;">
+                            <div
+                                style="position: absolute; bottom: 10px; right: 10px; width: 30px; height: 30px; background: rgba(30,30,30,0.85); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                                1</div>
+                        </div>
+                        <div class="img-caption"
+                            style="margin-top: 15px; border-bottom: 2.5px solid #222; padding-bottom: 5px;">Fig 1.
+                            Initial anomaly tracking.</div>
+                    </div>
+                    <div class="snap-img-container"
+                        style="scroll-snap-align: center; cursor: pointer; height: 90%; flex-shrink: 0; display: flex; flex-direction: column;">
+                        <div class="censored-img"
+                            style="width: 100%; height: auto; aspect-ratio: 16 / 9; border: 3px solid #eee; position: relative;">
+                            <div
+                                style="position: absolute; bottom: 10px; right: 10px; width: 30px; height: 30px; background: rgba(30,30,30,0.85); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                                2</div>
+                        </div>
+                        <div class="img-caption"
+                            style="margin-top: 15px; border-bottom: 2.5px solid #222; padding-bottom: 5px;">Fig 2.
+                            Analysis of the noise pattern.</div>
+                    </div>
+                    <div class="snap-img-container"
+                        style="scroll-snap-align: center; cursor: pointer; height: 90%; flex-shrink: 0; display: flex; flex-direction: column;">
+                        <div class="censored-img"
+                            style="width: 100%; height: auto; aspect-ratio: 16 / 9; border: 3px solid #eee; position: relative;">
+                            <div
+                                style="position: absolute; bottom: 10px; right: 10px; width: 30px; height: 30px; background: rgba(30,30,30,0.85); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                                3</div>
+                        </div>
+                        <div class="img-caption"
+                            style="margin-top: 15px; border-bottom: 2.5px solid #222; padding-bottom: 5px;">Fig 3.
+                            Signal distortion observed.</div>
+                    </div>
+                    <div class="snap-img-container"
+                        style="scroll-snap-align: center; cursor: pointer; height: 90%; flex-shrink: 0; display: flex; flex-direction: column;">
+                        <div class="censored-img"
+                            style="width: 100%; height: auto; aspect-ratio: 16 / 9; border: 3px solid #eee; position: relative;">
+                            <div
+                                style="position: absolute; bottom: 10px; right: 10px; width: 30px; height: 30px; background: rgba(30,30,30,0.85); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                                4</div>
+                        </div>
+                        <div class="img-caption"
+                            style="margin-top: 15px; border-bottom: 2.5px solid #222; padding-bottom: 5px;">Fig 4.
+                            Unknown entity movement.</div>
+                    </div>
+                    <div class="snap-img-container"
+                        style="scroll-snap-align: center; cursor: pointer; height: 90%; flex-shrink: 0; display: flex; flex-direction: column;">
+                        <div class="censored-img"
+                            style="width: 100%; height: auto; aspect-ratio: 16 / 9; border: 3px solid #eee; position: relative;">
+                            <div
+                                style="position: absolute; bottom: 10px; right: 10px; width: 30px; height: 30px; background: rgba(30,30,30,0.85); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                                5</div>
+                        </div>
+                        <div class="img-caption"
+                            style="margin-top: 15px; border-bottom: 2.5px solid #222; padding-bottom: 5px;">Fig 5.
+                            Evidence recovery.</div>
+                    </div>
+                    <div class="snap-img-container"
+                        style="scroll-snap-align: center; cursor: pointer; height: 90%; flex-shrink: 0; display: flex; flex-direction: column;">
+                        <div class="censored-img"
+                            style="width: 100%; height: auto; aspect-ratio: 16 / 9; border: 3px solid #eee; position: relative;">
+                            <div
+                                style="position: absolute; bottom: 10px; right: 10px; width: 30px; height: 30px; background: rgba(30,30,30,0.85); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                                6</div>
+                        </div>
+                        <div class="img-caption"
+                            style="margin-top: 15px; border-bottom: 2.5px solid #222; padding-bottom: 5px;">Fig 6.
+                            Post-event tracking.</div>
+                    </div>
+                </div>
+
+                <!-- Column 1.5: Dots -->
+                <div class="gallery-dots" id="gallery-dots">
+                    <div class="g-dot active" data-index="0"></div>
+                    <div class="g-dot" data-index="1"></div>
+                    <div class="g-dot" data-index="2"></div>
+                    <div class="g-dot" data-index="3"></div>
+                    <div class="g-dot" data-index="4"></div>
+                    <div class="g-dot" data-index="5"></div>
+                </div>
+
+                <!-- Column 2: Log Text -->
+                <div class="column" id="gallery-desc-column"
+                    style="flex: 2; justify-content: flex-start; display: flex; flex-direction: column;">
+                    <div class="news-headline" data-key="galleryDesc"
+                        style="margin-top: 0; border-bottom: 2.5px solid #222;">Description</div>
+                    <p class="censored news-text">
+                        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
+                        laudantium,
+                        totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto.
+                    </p>
+                    <p class="censored news-text">
+                        Beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit
+                        aspernatur
+                        aut
+                        odit aut fugit, sed quia consequuntur magni dolores eos sequi nesciunt.
+                    </p>
+                    <div class="censored-img" style="height: 120px; margin-top: 10px; margin-bottom: 10px;">
+                    </div>
+                    <p class="censored news-text">
+                        Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci
+                        velit.
+                    </p>
+                    <p class="censored news-text">
+                        Excepteur sint occaecat cupidatat non proident.
+                    </p>
+                    <p class="censored news-text">
+                        Sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde
+                        omnis iste natus error sit voluptatem accusantium doloremque laudantium.
+                    </p>
+                    <p class="censored news-text">
+                        Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
+                        consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
+                    </p>
+                    <div class="censored-img" style="height: 60px; margin-top: 5px; margin-bottom: 10px;"></div>
+                    <p class="censored news-text">
+                        Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci
+                        velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam.
+                    </p>
+                    <p class="censored news-text">
+                        Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit
+                        laboriosam,
+                        nisi ut aliquid ex ea commodi consequatur?
+                    </p>
+                    <p class="censored news-text">
+                        Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil
+                        molestiae.
+                    </p>
+                    <p class="censored news-text">
+                        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                        mollit
+                        anim id est laborum.
+                    </p>
+                    <p class="censored news-text">
+                        Lorem ipsum dolor sit amet consectetur adipiscing elit.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Team Window Overlay -->
+    <div id="team-window" class="content-window vertical-shape" style="width: 66vw; height: 72vh;">
+        <button id="close-team-btn" class="close-btn" title="Close Team" style="top: 10px; right: 10px; z-index: 20;">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+            </svg>
+        </button>
+        <div class="newspaper-content" style="height: 100%; overflow-y: auto;">
+            <div class="newspaper-header" data-key="production"
+                style="margin-bottom: 30px; padding-bottom: 20px; font-weight: 900; filter: none !important;">TEAM</div>
+            <div class="newspaper-body">
+                <!-- Column 1 -->
+                <div class="column vertical-separator thick-sep">
+                    <p class="censored news-text">
+                        At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium
+                        voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint
+                        occaecati
+                        cupiditate non provident.
+                    </p>
+                    <div class="censored-img"
+                        style="height: 120px; width: 85%; margin: 10px auto; transform: rotate(-1deg);"></div>
+                    <p class="censored news-text">
+                        Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum
+                        fuga.
+                        Et harum quidem rerum facilis est et expedita distinctio.
+                    </p>
+                    <p class="censored news-text">
+                        Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit.
+                    </p>
+                    <p class="censored news-text">
+                        Omnis voluptas assumenda est, omnis dolor repellendus. Praesentium voluptatum deleniti atque.
+                        Aliquam ac dignissim nisl. Curabitur convallis interdum metus, sed mattis tellus rutrum eget.
+                    </p>
+                    <p class="censored news-text">
+                        Consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est,
+                        qui dolorem ipsum quia dolor sit amet.
+                    </p>
+                </div>
+
+                <!-- Column 2 -->
+                <div class="column vertical-separator thick-sep">
+                    <div class="news-headline" style="border-bottom: 2.5px solid #222; margin-bottom: 10px;">CITY ON
+                        ALERT</div>
+                    <p class="censored news-text">
+                        Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus
+                        id
+                        quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor
+                        repellendus.
+                    </p>
+                    <div class="censored-img"
+                        style="height: 90px; width: 100%; margin: 5px 0; transform: rotate(1deg);"></div>
+                    <p class="censored news-text">
+                        Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe
+                        eveniet
+                        ut et voluptates repudiandae sint et molestiae non recusandae.
+                    </p>
+                    <p class="censored news-text">
+                        Itaque earum rerum hic tenetur a sapiente delectus.
+                    </p>
+                    <div class="censored-img" style="height: 60px; width: 100%; margin: 5px 0;"></div>
+                    <p class="censored news-text">
+                        Aut reiciendis voluptatibus maiores alias consequatur.
+                    </p>
+                    <p class="censored news-text">
+                        Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores
+                        alias consequatur aut perferendis doloribus.
+                    </p>
+                </div>
+
+                <!-- Column 3 -->
+                <div class="column">
+                    <p class="censored news-text">
+                        Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus
+                        maiores
+                        alias consequatur aut perferendis doloribus asperiores repellat.
+                    </p>
+                    <div class="censored-img" style="height: 180px; margin-top: 10px; margin-bottom: 10px;">
+                    </div>
+                    <div class="img-caption" style="margin-top: 15px;">Fig 3. Witness sketch</div>
+                    <p class="censored news-text">
+                        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium.
+                    </p>
+                    <p class="censored news-text">
+                        Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.
+                    </p>
+                    <div class="censored-img" style="height: 50px; margin-top: 10px;"></div>
+                    <p class="censored news-text">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore magna aliqua.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SFX Muted Notification -->
+    <div id="sfx-notification" class="sfx-notification">
+        <span class="sfx-text" data-key="sfxMuted">SFX auto-muted during video</span>
+    </div>
+
+    <!-- Rain background ambient audio -->
+    <audio id="rain-audio" src="sounds/rain cut.m4a" loop autoplay></audio>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
