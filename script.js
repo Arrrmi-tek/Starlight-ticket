@@ -542,6 +542,15 @@ const sfxNotification = document.getElementById('sfx-notification');
 const youtubePlayer = document.getElementById('youtube-player');
 let wasMutedBeforeVideo = false;
 
+function togglePurpleLighting(isActive) {
+    const body = document.body;
+    if (isActive) {
+        body.classList.add('video-active');
+    } else {
+        body.classList.remove('video-active');
+    }
+}
+
 if (btnTrailer) {
     btnTrailer.addEventListener('click', (e) => {
         e.preventDefault();
@@ -549,6 +558,8 @@ if (btnTrailer) {
 
         videoWindow.classList.add('slide-in');
         youtubePlayer.src = "https://www.youtube.com/embed/TWo91PrbsUc?enablejsapi=1&autoplay=1&mute=0&controls=1";
+
+        togglePurpleLighting(true);
 
         wasMutedBeforeVideo = isMuted;
         if (!isMuted) {
@@ -565,6 +576,8 @@ if (closeVideoBtn) {
         e.preventDefault();
         videoWindow.classList.remove('slide-in');
         youtubePlayer.src = "https://www.youtube.com/embed/TWo91PrbsUc?enablejsapi=1&autoplay=0&mute=0&controls=1";
+        
+        togglePurpleLighting(false);
 
         if (!wasMutedBeforeVideo && isMuted) {
             toggleMute(); // Restore unmute

@@ -66,10 +66,23 @@ body {
            Angled rectangular shadow starting past the tips of the shorter 135deg grille (calc'd 200px closer to center).
            Matches 45deg orientation (parallel to the longer grille). Soft edge at the tips, fading darker towards the screen edges.
         */
-        linear-gradient(45deg, #000 0%, rgba(0, 0, 0, 0.6) calc(2.5% + 250px), transparent calc(2.5% + 300px), transparent calc(97.5% - 300px), rgba(0, 0, 0, 0.6) calc(97.5% - 250px), #000 100%),
+        linear-gradient(45deg, #000 0%, rgba(0, 0, 0, 0.6) calc(2.5% + 250px), transparent calc(2.5% + 300px), transparent calc(97.5% - 300px), rgba(0, 0, 0, 0.6) calc(97.5% - 250px), #000 100%);
+}
 
-        /* Neon Glow (Bottom Right) - Raised to top of stack, Intensity bumped to 0.4 for visibility */
-        radial-gradient(circle at 85% 90%, rgba(255, 0, 128, 0.4) 0%, rgba(255, 0, 128, 0.15) 50%, rgba(255, 0, 128, 0) 100%);
+.window-frame-effect::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    background: radial-gradient(circle at 85% 90%, rgba(255, 0, 128, 0.4) 0%, rgba(255, 0, 128, 0.15) 50%, rgba(255, 0, 128, 0) 100%);
+    opacity: 1;
+    will-change: opacity;
+    transition: opacity 1.5s ease;
+}
+
+body.video-active .window-frame-effect::before {
+    opacity: 0;
 }
 
 /* --- RAIN OVERLAY --- */
@@ -1025,7 +1038,14 @@ body.lang-en .nav-item.active.highlight-btn {
     height: 100%;
     pointer-events: none;
     z-index: 2;
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.6) 60%, rgba(255, 0, 128, 0.08) 100%);
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.6) 60%, transparent 100%);
+    box-shadow: inset -150px -150px 200px rgba(255, 0, 128, 0.08);
+    transition: box-shadow 1.5s ease;
+}
+
+body.video-active .info-card::after,
+body.video-active .paper-layer::after {
+    box-shadow: inset -150px -150px 200px rgba(255, 0, 128, 0);
 }
 
 
@@ -1283,7 +1303,13 @@ body.lang-en .nav-item.active.highlight-btn {
     pointer-events: none;
     z-index: 20;
     /* On top of ticket content */
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.6) 60%, rgba(255, 0, 128, 0.05) 100%);
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.6) 60%, transparent 100%);
+    box-shadow: inset -150px -150px 200px rgba(255, 0, 128, 0.05);
+    transition: box-shadow 1.5s ease;
+}
+
+body.video-active .ticket-container::after {
+    box-shadow: inset -150px -150px 200px rgba(255, 0, 128, 0);
 }
 
 /* --- LEFT SIDE (MAIN) --- */
