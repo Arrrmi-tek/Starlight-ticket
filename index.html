@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Starlight Ticket | 星光航班</title>
+    <link rel="icon" href="images/網頁ICON.png" type="image/png">
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -210,8 +211,11 @@
     <div class="ticket-container">
 
         <div class="ticket-main">
-            <img src="images/jill_room.png" alt="Jill" class="ticket-jill-img">
+            <img src="images/ticket.jpg" alt="Ticket BG" class="ticket-jill-img">
             <div class="background-radial"></div>
+
+            <img src="images/動畫名稱.png" alt="Logo" class="ticket-overlay ticket-lang-icon">
+
             <div class="perforation"></div>
         </div>
 
@@ -296,7 +300,7 @@
                     d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
             </svg>
             <span class="lang-indicator fade-text"
-                style="font-size: 0.95rem; font-weight: bold; text-shadow: 1px 1px 3px rgba(0,0,0,0.9); font-style: normal; margin-left: 8px; color: white;">EN</span>
+                style="font-family: sans-serif; font-size: 0.95rem; font-weight: 900; text-shadow: 1px 1px 3px rgba(0,0,0,0.9); font-style: normal; margin-left: 8px; color: white;">EN</span>
         </button>
 
         <button id="mute-btn" onclick="toggleMute()" class="mute-btn" title="Toggle Sound">
@@ -342,7 +346,8 @@
         </button>
         <div class="newspaper-content" style="height: 100%; overflow-y: auto;">
             <div class="newspaper-header" data-key="synopsis"
-                style="margin-bottom: 30px; padding-bottom: 20px; font-weight: 900; filter: none !important;">SYNOPSIS
+                style="margin-bottom: 30px; padding-bottom: 20px; font-weight: 900; text-align: center;filter: none !important;">
+                SYNOPSIS
             </div>
             <div class="newspaper-body" style="height: 100%;">
                 <div class="column picture-mode thick-sep"
@@ -350,37 +355,21 @@
                     <div class="carousel-container"
                         style="width: 100%; height: auto; aspect-ratio: 16 / 9; position: relative; overflow: hidden; border: 3px solid #eee;">
                         <div class="carousel-slide active"
-                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('images/jill_room.png') center/cover; opacity: 1; transition: opacity 1.5s ease;">
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('images/synopsis/1.png') center/cover; opacity: 1; transition: opacity 1.5s ease;">
                         </div>
                         <div class="carousel-slide"
-                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #444; opacity: 0; transition: opacity 1.5s ease; display: flex; align-items: center; justify-content: center; color: white;">
-                            CAROUSEL IMAGE 2</div>
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('images/synopsis/2.png') center/cover; opacity: 0; transition: opacity 1.5s ease;"></div>
                         <div class="carousel-slide"
-                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #666; opacity: 0; transition: opacity 1.5s ease; display: flex; align-items: center; justify-content: center; color: white;">
-                            CAROUSEL IMAGE 3</div>
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('images/synopsis/3.png') center/cover; opacity: 0; transition: opacity 1.5s ease;"></div>
                     </div>
-                    <div class="img-caption" data-key="synopsisDesc"
-                        style="margin-top: 10px; border-bottom: 2.5px solid #222; padding-bottom: 5px;">Fig 1: Exploring
-                        anomalies.</div>
                 </div>
                 <div class="column"
-                    style="flex: 2; justify-content: flex-start; display: flex; flex-direction: column;">
+                    style="flex: 2; justify-content: flex-start; display: flex; flex-direction: column; margin-left: -20px;">
                     <div class="news-headline" data-key="synopsisDescTitle"
-                        style="margin-top: 0; border-bottom: 2.5px solid #222; white-space: pre-wrap; line-height: 1.2;">
-                        The main&#10;point is...</div>
-                    <p class="censored news-text">
-                        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
-                        laudantium,
-                        totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto.
-                    </p>
-                    <p class="censored news-text">
-                        Beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur
-                        aut odit aut fugit, sed quia consequuntur magni dolores eos sequi nesciunt.
-                    </p>
-                    <p class="censored news-text">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam nec mi vulputate, luctus nunc
-                        a,
-                        dignissim felis. Pellentesque mattis scelerisque justo non consequat.
+                        style="margin-top: 0; border-bottom: 2.5px solid #222; line-height: 1.2;">The Main Point is...
+                    </div>
+                    <p class="censored news-text" data-key="synopsisText">
+                        The financially struggling female protagonist seized an opportunity to turn her life around one night, completely unaware that criminals behind the scenes were attempting to use this chance to do something malicious. In the end, the protagonist successfully grasped the ticket that could lift her from rock bottom, ready to board her starlight flight and realize her dream.
                     </p>
                 </div>
             </div>
@@ -397,92 +386,11 @@
             </svg>
         </button>
         <div class="newspaper-content" style="height: 100%; overflow-y: auto;">
-            <div class="newspaper-header" data-key="gallery"
-                style="margin-bottom: 30px; padding-bottom: 20px; font-weight: 900; filter: none !important;">GALLERY
+            <div class="newspaper-header" data-key="galleryHeader"
+                style="margin-top: 30px; font-weight: 900; filter: none !important; text-align: center">
+                GALLERY
             </div>
             <div class="newspaper-body" style="height: 100%;">
-                <!-- Column 1: Image Roll -->
-                <div class="column picture-mode image-roll"
-                    style="flex: 6.5; justify-content: flex-start; padding-bottom: 0; padding-top: 50px; overflow-y: scroll; scroll-snap-type: y mandatory; height: 100%; scrollbar-width: none; -ms-overflow-style: none;">
-                    <style>
-                        .image-roll::-webkit-scrollbar {
-                            display: none;
-                        }
-                    </style>
-                    <div class="snap-img-container"
-                        style="scroll-snap-align: center; cursor: pointer; height: 90%; flex-shrink: 0; display: flex; flex-direction: column;">
-                        <div class="censored-img"
-                            style="width: 100%; height: auto; aspect-ratio: 16 / 9; border: 3px solid #eee; background-image: url('images/jill_room.png'); background-size: cover; background-position: center; position: relative;">
-                            <div
-                                style="position: absolute; bottom: 10px; right: 10px; width: 30px; height: 30px; background: rgba(30,30,30,0.85); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-                                1</div>
-                        </div>
-                        <div class="img-caption"
-                            style="margin-top: 15px; border-bottom: 2.5px solid #222; padding-bottom: 5px;">Fig 1.
-                            Initial anomaly tracking.</div>
-                    </div>
-                    <div class="snap-img-container"
-                        style="scroll-snap-align: center; cursor: pointer; height: 90%; flex-shrink: 0; display: flex; flex-direction: column;">
-                        <div class="censored-img"
-                            style="width: 100%; height: auto; aspect-ratio: 16 / 9; border: 3px solid #eee; position: relative;">
-                            <div
-                                style="position: absolute; bottom: 10px; right: 10px; width: 30px; height: 30px; background: rgba(30,30,30,0.85); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-                                2</div>
-                        </div>
-                        <div class="img-caption"
-                            style="margin-top: 15px; border-bottom: 2.5px solid #222; padding-bottom: 5px;">Fig 2.
-                            Analysis of the noise pattern.</div>
-                    </div>
-                    <div class="snap-img-container"
-                        style="scroll-snap-align: center; cursor: pointer; height: 90%; flex-shrink: 0; display: flex; flex-direction: column;">
-                        <div class="censored-img"
-                            style="width: 100%; height: auto; aspect-ratio: 16 / 9; border: 3px solid #eee; position: relative;">
-                            <div
-                                style="position: absolute; bottom: 10px; right: 10px; width: 30px; height: 30px; background: rgba(30,30,30,0.85); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-                                3</div>
-                        </div>
-                        <div class="img-caption"
-                            style="margin-top: 15px; border-bottom: 2.5px solid #222; padding-bottom: 5px;">Fig 3.
-                            Signal distortion observed.</div>
-                    </div>
-                    <div class="snap-img-container"
-                        style="scroll-snap-align: center; cursor: pointer; height: 90%; flex-shrink: 0; display: flex; flex-direction: column;">
-                        <div class="censored-img"
-                            style="width: 100%; height: auto; aspect-ratio: 16 / 9; border: 3px solid #eee; position: relative;">
-                            <div
-                                style="position: absolute; bottom: 10px; right: 10px; width: 30px; height: 30px; background: rgba(30,30,30,0.85); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-                                4</div>
-                        </div>
-                        <div class="img-caption"
-                            style="margin-top: 15px; border-bottom: 2.5px solid #222; padding-bottom: 5px;">Fig 4.
-                            Unknown entity movement.</div>
-                    </div>
-                    <div class="snap-img-container"
-                        style="scroll-snap-align: center; cursor: pointer; height: 90%; flex-shrink: 0; display: flex; flex-direction: column;">
-                        <div class="censored-img"
-                            style="width: 100%; height: auto; aspect-ratio: 16 / 9; border: 3px solid #eee; position: relative;">
-                            <div
-                                style="position: absolute; bottom: 10px; right: 10px; width: 30px; height: 30px; background: rgba(30,30,30,0.85); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-                                5</div>
-                        </div>
-                        <div class="img-caption"
-                            style="margin-top: 15px; border-bottom: 2.5px solid #222; padding-bottom: 5px;">Fig 5.
-                            Evidence recovery.</div>
-                    </div>
-                    <div class="snap-img-container"
-                        style="scroll-snap-align: center; cursor: pointer; height: 90%; flex-shrink: 0; display: flex; flex-direction: column;">
-                        <div class="censored-img"
-                            style="width: 100%; height: auto; aspect-ratio: 16 / 9; border: 3px solid #eee; position: relative;">
-                            <div
-                                style="position: absolute; bottom: 10px; right: 10px; width: 30px; height: 30px; background: rgba(30,30,30,0.85); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-                                6</div>
-                        </div>
-                        <div class="img-caption"
-                            style="margin-top: 15px; border-bottom: 2.5px solid #222; padding-bottom: 5px;">Fig 6.
-                            Post-event tracking.</div>
-                    </div>
-                </div>
-
                 <!-- Column 1.5: Dots -->
                 <div class="gallery-dots" id="gallery-dots">
                     <div class="g-dot active" data-index="0"></div>
@@ -493,60 +401,101 @@
                     <div class="g-dot" data-index="5"></div>
                 </div>
 
+                <!-- Column 1: Image Roll -->
+                <div class="column picture-mode image-roll thick-sep"
+                    style="flex: 5.5; justify-content: flex-start; padding-top: 50px; overflow-y: scroll; scroll-snap-type: y mandatory; height: 100%; scrollbar-width: none; -ms-overflow-style: none; padding-right: 15px;">
+                    <style>
+                        .image-roll::-webkit-scrollbar {
+                            display: none;
+                        }
+                    </style>
+                    <div class="snap-img-container"
+                        style="scroll-snap-align: center; cursor: pointer; height: 90%; flex-shrink: 0; display: flex; flex-direction: column;">
+                        <div class="censored-img zoomable-img"
+                            style="width: 100%; height: auto; aspect-ratio: 16 / 9; border: 3px solid #eee; background-image: url('images/gallery/1.jpg'); background-size: cover; background-position: center; position: relative;">
+                            <div class="img-zoom-badge">
+                                <span>1</span>
+                                <svg viewBox="0 0 24 24" fill="white" width="14" height="14">
+                                    <path
+                                        d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="snap-img-container"
+                        style="scroll-snap-align: center; cursor: pointer; height: 90%; flex-shrink: 0; display: flex; flex-direction: column;">
+                        <div class="censored-img zoomable-img"
+                            style="width: 100%; height: auto; aspect-ratio: 16 / 9; border: 3px solid #eee; background-image: url('images/gallery/2.jpg'); background-size: cover; background-position: center; position: relative;">
+                            <div class="img-zoom-badge">
+                                <span>2</span>
+                                <svg viewBox="0 0 24 24" fill="white" width="14" height="14">
+                                    <path
+                                        d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="snap-img-container"
+                        style="scroll-snap-align: center; cursor: pointer; height: 90%; flex-shrink: 0; display: flex; flex-direction: column;">
+                        <div class="censored-img zoomable-img"
+                            style="width: 100%; height: auto; aspect-ratio: 16 / 9; border: 3px solid #eee; background-image: url('images/gallery/3.jpg'); background-size: cover; background-position: center; position: relative;">
+                            <div class="img-zoom-badge">
+                                <span>3</span>
+                                <svg viewBox="0 0 24 24" fill="white" width="14" height="14">
+                                    <path
+                                        d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="snap-img-container"
+                        style="scroll-snap-align: center; cursor: pointer; height: 90%; flex-shrink: 0; display: flex; flex-direction: column;">
+                        <div class="censored-img zoomable-img"
+                            style="width: 100%; height: auto; aspect-ratio: 16 / 9; border: 3px solid #eee; background-image: url('images/gallery/4.jpg'); background-size: cover; background-position: center; position: relative;">
+                            <div class="img-zoom-badge">
+                                <span>4</span>
+                                <svg viewBox="0 0 24 24" fill="white" width="14" height="14">
+                                    <path
+                                        d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="snap-img-container"
+                        style="scroll-snap-align: center; cursor: pointer; height: 90%; flex-shrink: 0; display: flex; flex-direction: column;">
+                        <div class="censored-img zoomable-img"
+                            style="width: 100%; height: auto; aspect-ratio: 16 / 9; border: 3px solid #eee; background-image: url('images/gallery/5.jpg'); background-size: cover; background-position: center; position: relative;">
+                            <div class="img-zoom-badge">
+                                <span>5</span>
+                                <svg viewBox="0 0 24 24" fill="white" width="14" height="14">
+                                    <path
+                                        d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="snap-img-container"
+                        style="scroll-snap-align: center; cursor: pointer; height: 90%; flex-shrink: 0; display: flex; flex-direction: column;">
+                        <div class="censored-img zoomable-img"
+                            style="width: 100%; height: auto; aspect-ratio: 16 / 9; border: 3px solid #eee; background-image: url('images/gallery/6.jpg'); background-size: cover; background-position: center; position: relative;">
+                            <div class="img-zoom-badge">
+                                <span>6</span>
+                                <svg viewBox="0 0 24 24" fill="white" width="14" height="14">
+                                    <path
+                                        d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Column 2: Log Text -->
                 <div class="column" id="gallery-desc-column"
-                    style="flex: 2; justify-content: flex-start; display: flex; flex-direction: column;">
+                    style="flex: 3; justify-content: flex-start; display: flex; flex-direction: column;">
                     <div class="news-headline" data-key="galleryDesc"
                         style="margin-top: 0; border-bottom: 2.5px solid #222;">Description</div>
-                    <p class="censored news-text">
-                        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
-                        laudantium,
-                        totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto.
-                    </p>
-                    <p class="censored news-text">
-                        Beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit
-                        aspernatur
-                        aut
-                        odit aut fugit, sed quia consequuntur magni dolores eos sequi nesciunt.
-                    </p>
-                    <div class="censored-img" style="height: 120px; margin-top: 10px; margin-bottom: 10px;">
-                    </div>
-                    <p class="censored news-text">
-                        Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci
-                        velit.
-                    </p>
-                    <p class="censored news-text">
-                        Excepteur sint occaecat cupidatat non proident.
-                    </p>
-                    <p class="censored news-text">
-                        Sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde
-                        omnis iste natus error sit voluptatem accusantium doloremque laudantium.
-                    </p>
-                    <p class="censored news-text">
-                        Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-                        consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
-                    </p>
-                    <div class="censored-img" style="height: 60px; margin-top: 5px; margin-bottom: 10px;"></div>
-                    <p class="censored news-text">
-                        Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci
-                        velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam.
-                    </p>
-                    <p class="censored news-text">
-                        Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit
-                        laboriosam,
-                        nisi ut aliquid ex ea commodi consequatur?
-                    </p>
-                    <p class="censored news-text">
-                        Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil
-                        molestiae.
-                    </p>
-                    <p class="censored news-text">
-                        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                        mollit
-                        anim id est laborum.
-                    </p>
-                    <p class="censored news-text">
-                        Lorem ipsum dolor sit amet consectetur adipiscing elit.
+                    <p class="censored news-text fade-text" data-key="galleryDescText">
+                        We made the environments for the animation to be highly detailed, while striking a perfect balance between not being too empty and not too crowded with unimportant objects. The main element we used to increase the beauty of the scenes in our animation, is the use of warm and cold lighting and using high quality texture files for the objects on the scene. Overall, we learnt a lot and made improvements as time goes by during production of this animation, such as going for a more "grand/high quality" feel for the environments compared to what these environments would've look like in real life
                     </p>
                 </div>
             </div>
@@ -554,7 +503,7 @@
     </div>
 
     <!-- Team Window Overlay -->
-    <div id="team-window" class="content-window vertical-shape" style="width: 66vw; height: 72vh;">
+    <div id="team-window" class="content-window vertical-shape" style="width: 86vw; height: 94vh;">
         <button id="close-team-btn" class="close-btn" title="Close Team" style="top: 10px; right: 10px; z-index: 20;">
             <svg viewBox="0 0 24 24" fill="currentColor">
                 <path
@@ -563,86 +512,192 @@
         </button>
         <div class="newspaper-content" style="height: 100%; overflow-y: auto;">
             <div class="newspaper-header" data-key="production"
-                style="margin-bottom: 30px; padding-bottom: 20px; font-weight: 900; filter: none !important;">TEAM</div>
+                style="margin-bottom: 30px; padding-bottom: 20px; font-weight: 900; filter: none !important; text-align:center;">
+                TEAM</div>
             <div class="newspaper-body">
                 <!-- Column 1 -->
-                <div class="column vertical-separator thick-sep">
+                <div class="column vertical-separator thick-sep"
+                    style="display: flex; flex-direction: column; align-items: center;">
                     <p class="censored news-text">
-                        At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium
-                        voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint
-                        occaecati
-                        cupiditate non provident.
+                        Early reports from the downtown sector indicate a massive surge in <span
+                            class="blackout">unregistered kinetic responses</span>. Local authorities have cordoned off
+                        the primary zone, requesting all civilians to avoid the barricaded perimeter indefinitely.
                     </p>
+                    <p class="censored news-text">
+                        The source of the disturbance remains <span class="blackout">highly classified</span> as
+                        investigative teams arrive on the scene. Speculation points towards an infrastructure
+                        malfunction, but <span class="blackout">eyewitnesses claim to have seen</span> anomalous light
+                        patterns.
+                    </p>
+
                     <div class="censored-img"
-                        style="height: 120px; width: 85%; margin: 10px auto; transform: rotate(-1deg);"></div>
+                        style="height: 165px; width: 165px; border-radius: 50%; border: 3px solid #eee; margin-top: 15px; margin-bottom: 15px; background-image: url('portraits/andy.jpg'); background-size: cover; background-position: center;">
+                    </div>
+                    <div
+                        style="display: flex; align-items: center; border-bottom: 2.5px solid #222; margin-bottom: 10px; width: 100%; margin-top: 10px; font-family: 'Times New Roman', serif; color: #111 !important;">
+                        <div style="font-size: 3.2rem; line-height: 1; font-weight: 900;">陳</div>
+                        <div
+                            style="display: flex; flex-direction: column; font-size: 1.4rem; line-height: 1.1; margin-left: 4px; font-weight: bold;">
+                            <span>幼</span>
+                            <span>城</span>
+                        </div>
+                        <span style="font-size: 3rem; margin: 0 5px; font-weight: bold;">/</span>
+                        <div
+                            style="display: flex; flex-direction: column; font-family: 'Arial Black', Impact, sans-serif; text-transform: uppercase; font-weight: 900; filter: none !important; line-height: 1; padding-bottom: 5px;">
+                            <span style="font-size: 1.6rem; letter-spacing: 1px;">CHEN</span>
+                            <span style="font-size: 1.1rem; margin-top: 2px;">YOU CHENG</span>
+                        </div>
+                    </div>
+                    <ul
+                        style="padding-left: 0; list-style-type: none; text-align: left; width: 100%; margin-bottom: 20px; font-family: 'Arial Black', Impact, sans-serif; text-transform: uppercase;">
+                        <li class="role-item">
+                            <span class="role-text" data-key="roleWeb">web design</span><span class="role-dots"></span>
+                        </li>
+                        <li class="role-item">
+                            <span class="role-text" data-key="roleLight">lighting design</span><span
+                                class="role-dots"></span>
+                        </li>
+                        <li class="role-item">
+                            <span class="role-text" data-key="roleArt">artwork</span><span class="role-dots"></span>
+                        </li>
+                    </ul>
+
                     <p class="censored news-text">
-                        Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum
-                        fuga.
-                        Et harum quidem rerum facilis est et expedita distinctio.
+                        Emergency broadcast systems were temporarily <span class="blackout">overridden by an unknown
+                            signal</span> at 0400 hours. Analysts are currently attempting to decrypt the audio
+                        fragments left behind in the system's memory banks.
                     </p>
                     <p class="censored news-text">
-                        Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit.
-                    </p>
-                    <p class="censored news-text">
-                        Omnis voluptas assumenda est, omnis dolor repellendus. Praesentium voluptatum deleniti atque.
-                        Aliquam ac dignissim nisl. Curabitur convallis interdum metus, sed mattis tellus rutrum eget.
-                    </p>
-                    <p class="censored news-text">
-                        Consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est,
-                        qui dolorem ipsum quia dolor sit amet.
+                        Further updates will be strictly limited to <span class="blackout">Level 4 personnel</span> and
+                        above until the situation is stabilized.
                     </p>
                 </div>
 
                 <!-- Column 2 -->
-                <div class="column vertical-separator thick-sep">
-                    <div class="news-headline" style="border-bottom: 2.5px solid #222; margin-bottom: 10px;">CITY ON
-                        ALERT</div>
+                <div class="column vertical-separator thick-sep"
+                    style="display: flex; flex-direction: column; align-items: center;">
+                    <div
+                        style="display: flex; align-items: center; border-bottom: 2.5px solid #222; margin-bottom: 10px; width: 100%; margin-top: 10px; font-family: 'Times New Roman', serif; color: #111 !important;">
+                        <div style="font-size: 3.2rem; line-height: 1; font-weight: 900;">黃</div>
+                        <div
+                            style="display: flex; flex-direction: column; font-size: 1.4rem; line-height: 1.1; margin-left: 4px; font-weight: bold;">
+                            <span>俊</span>
+                            <span>明</span>
+                        </div>
+                        <span style="font-size: 3rem; margin: 0 5px; font-weight: bold;">/</span>
+                        <div
+                            style="display: flex; flex-direction: column; font-family: 'Arial Black', Impact, sans-serif; text-transform: uppercase; font-weight: 900; filter: none !important; line-height: 1; padding-bottom: 5px;">
+                            <span style="font-size: 1.6rem; letter-spacing: 1px;">HUANG</span>
+                            <span style="font-size: 1.1rem; margin-top: 2px;">CHUN-MING</span>
+                        </div>
+                    </div>
+                    <ul
+                        style="padding-left: 0; list-style-type: none; text-align: left; width: 100%; margin-bottom: 25px; font-family: 'Arial Black', Impact, sans-serif; text-transform: uppercase;">
+                        <li class="role-item">
+                            <span class="role-text" data-key="roleSupervisor">Supervisor Teacher</span><span
+                                class="role-dots"></span>
+                        </li>
+                    </ul>
                     <p class="censored news-text">
-                        Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus
-                        id
-                        quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor
-                        repellendus.
+                        Routine maintenance schedules have been entirely suspended. All technician crews are redirected
+                        to <span class="blackout">the primary containment facility</span>. Heavy equipment is being
+                        mobilized under the cover of night.
                     </p>
+
                     <div class="censored-img"
-                        style="height: 90px; width: 100%; margin: 5px 0; transform: rotate(1deg);"></div>
+                        style="height: 165px; width: 165px; border-radius: 50%; border: 3px solid #eee; margin-top: 30px; margin-bottom: 15px; background-image: url('portraits/cary.jpg'); background-size: cover; background-position: center;">
+                    </div>
+                    <div
+                        style="display: flex; align-items: center; border-bottom: 2.5px solid #222; margin-bottom: 10px; width: 100%; margin-top: 10px; font-family: 'Times New Roman', serif; color: #111 !important;">
+                        <div style="font-size: 3.2rem; line-height: 1; font-weight: 900;">蕭</div>
+                        <div
+                            style="display: flex; flex-direction: column; font-size: 1.4rem; line-height: 1.1; margin-left: 4px; font-weight: bold;">
+                            <span>國</span>
+                            <span>源</span>
+                        </div>
+                        <span style="font-size: 3rem; margin: 0 5px; font-weight: bold;">/</span>
+                        <div
+                            style="display: flex; flex-direction: column; font-family: 'Arial Black', Impact, sans-serif; text-transform: uppercase; font-weight: 900; filter: none !important; line-height: 1; padding-bottom: 5px;">
+                            <span style="font-size: 1.6rem; letter-spacing: 1px;">XIAO</span>
+                            <span style="font-size: 1.1rem; margin-top: 2px;">GUO YUAN</span>
+                        </div>
+                    </div>
+                    <ul
+                        style="padding-left: 0; list-style-type: none; text-align: left; width: 100%; margin-bottom: 20px; font-family: 'Arial Black', Impact, sans-serif; text-transform: uppercase;">
+                        <li class="role-item">
+                            <span class="role-text" data-key="roleAnim">animation</span><span class="role-dots"></span>
+                        </li>
+                        <li class="role-item">
+                            <span class="role-text" data-key="roleShoot">shooting</span><span class="role-dots"></span>
+                        </li>
+                        <li class="role-item">
+                            <span class="role-text" data-key="rolePost">post production</span><span
+                                class="role-dots"></span>
+                        </li>
+                    </ul>
+
                     <p class="censored news-text">
-                        Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe
-                        eveniet
-                        ut et voluptates repudiandae sint et molestiae non recusandae.
-                    </p>
-                    <p class="censored news-text">
-                        Itaque earum rerum hic tenetur a sapiente delectus.
-                    </p>
-                    <div class="censored-img" style="height: 60px; width: 100%; margin: 5px 0;"></div>
-                    <p class="censored news-text">
-                        Aut reiciendis voluptatibus maiores alias consequatur.
-                    </p>
-                    <p class="censored news-text">
-                        Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores
-                        alias consequatur aut perferendis doloribus.
+                        The public narrative is currently maintaining that these are standard structural reinforcements.
+                        <span class="blackout">Do not distribute the real structural status reports.</span>
                     </p>
                 </div>
 
                 <!-- Column 3 -->
-                <div class="column">
+                <div class="column" style="display: flex; flex-direction: column; align-items: center;">
                     <p class="censored news-text">
-                        Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus
-                        maiores
-                        alias consequatur aut perferendis doloribus asperiores repellat.
+                        In the event of a total communication blackout across the grid, executing protocol <span
+                            class="blackout">OMEGA-SEVEN</span> is paramount. Ensure all physical hard drives are
+                        secured.
                     </p>
-                    <div class="censored-img" style="height: 180px; margin-top: 10px; margin-bottom: 10px;">
+                    <div class="censored-img"
+                        style="height: 165px; width: 165px; border-radius: 50%; border: 3px solid #eee; margin-top: 40px; margin-bottom: 15px; background-image: url('portraits/zhong.jpg'); background-size: cover; background-position: center;">
                     </div>
-                    <div class="img-caption" style="margin-top: 15px;">Fig 3. Witness sketch</div>
+                    <div
+                        style="display: flex; align-items: center; border-bottom: 2.5px solid #222; margin-bottom: 10px; width: 100%; margin-top: 10px; font-family: 'Times New Roman', serif; color: #111 !important;">
+                        <div style="font-size: 3.2rem; line-height: 1; font-weight: 900;">張</div>
+                        <div
+                            style="display: flex; flex-direction: column; font-size: 1.4rem; line-height: 1.1; margin-left: 4px; font-weight: bold;">
+                            <span>宗</span>
+                            <span>瑋</span>
+                        </div>
+                        <span style="font-size: 3rem; margin: 0 5px; font-weight: bold;">/</span>
+                        <div
+                            style="display: flex; flex-direction: column; font-family: 'Arial Black', Impact, sans-serif; text-transform: uppercase; font-weight: 900; filter: none !important; line-height: 1; padding-bottom: 5px;">
+                            <span style="font-size: 1.6rem; letter-spacing: 1px;">ZHANG</span>
+                            <span style="font-size: 1.1rem; margin-top: 2px;">ZONG WEI</span>
+                        </div>
+                    </div>
+                    <ul
+                        style="padding-left: 0; list-style-type: none; text-align: left; width: 100%; margin-bottom: 20px; font-family: 'Arial Black', Impact, sans-serif; text-transform: uppercase;">
+                        <li class="role-item">
+                            <span class="role-text" data-key="roleProj">project management</span><span
+                                class="role-dots"></span>
+                        </li>
+                        <li class="role-item">
+                            <span class="role-text" data-key="roleProg">programming</span><span
+                                class="role-dots"></span>
+                        </li>
+                        <li class="role-item">
+                            <span class="role-text" data-key="roleAnim">animation</span><span class="role-dots"></span>
+                        </li>
+                        <li class="role-item">
+                            <span class="role-text" data-key="roleCam">camera</span><span class="role-dots"></span>
+                        </li>
+                        <li class="role-item">
+                            <span class="role-text" data-key="roleMusic">music/sound design</span><span
+                                class="role-dots"></span>
+                        </li>
+                        <li class="role-item">
+                            <span class="role-text" data-key="roleFilmEdit">film editing</span><span
+                                class="role-dots"></span>
+                        </li>
+                        <li class="role-item">
+                            <span class="role-text" data-key="roleImageEdit">image editing</span><span
+                                class="role-dots"></span>
+                        </li>
+                    </ul>
                     <p class="censored news-text">
-                        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium.
-                    </p>
-                    <p class="censored news-text">
-                        Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.
-                    </p>
-                    <div class="censored-img" style="height: 50px; margin-top: 10px;"></div>
-                    <p class="censored news-text">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua.
+                        <span class="blackout">We are no longer alone.</span>
                     </p>
                 </div>
             </div>
@@ -656,6 +711,23 @@
 
     <!-- Rain background ambient audio -->
     <audio id="rain-audio" src="sounds/rain cut.m4a" loop autoplay></audio>
+
+    <!-- Image Zoom Overlay -->
+    <div id="image-zoom-overlay" class="image-zoom-overlay">
+        <button id="close-zoom-btn" class="close-btn" title="Close Zoom"
+            style="top: 20px; right: 20px; z-index: 10001; opacity: 1;">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+            </svg>
+        </button>
+        <img id="zoomed-image" src="" alt="Zoomed Image">
+    </div>
+
+    <!-- Zoom Notification -->
+    <div id="zoom-notification" class="sfx-notification" style="z-index: 10002;">
+        <span class="sfx-text" data-key="zoomOutMsg">Click outside the frame to zoom out</span>
+    </div>
 
     <script src="script.js"></script>
 </body>

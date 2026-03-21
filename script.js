@@ -13,7 +13,24 @@ const translations = {
         changeLang: "切換語言",
         whatWeKnow: "目前所知",
         galleryDesc: "描述",
-        synopsisDescTitle: "主要\n重點是..."
+        galleryDescText: "我們將這部動畫的環境場景製作得非常精緻，同時在避免過度空曠與不被次要物件塞滿之間，取得了完美的平衡。我們用來提升動畫場景美感的主要元素，在於冷暖光線的運用，以及為場景中的物件搭配高品質的材質貼圖。整體而言，在製作這部動畫的過程中，隨著時間的推移我們學到了很多並持續進步，例如與現實生活中的真實樣貌相比，我們更傾向於為這些環境營造出一種更「宏大／高品質」的氛圍。",
+        synopsisDescTitle: "主要重點是...",
+        galleryHeader: "畫廊",
+        zoomOutMsg: "點擊相框外任意處即可縮小",
+        synopsisText: "生活拮据的女主角在某夜抓住了翻身的機會，殊不知在背後卻有不法份子試圖利用這次的機會，做些不好的事情。最後主角也成功抓住了可以讓她從谷底翻身的票券，準備前往屬於她的星光航班，實現夢想。",
+        roleWeb: "網頁設計",
+        roleLight: "燈光設計",
+        roleArt: "美術",
+        roleAnim: "動畫",
+        roleShoot: "攝影",
+        rolePost: "後期製作",
+        roleProj: "專案管理",
+        roleProg: "程式設計",
+        roleCam: "攝影機",
+        roleMusic: "音樂/音效設計",
+        roleFilmEdit: "影片剪輯",
+        roleImageEdit: "影像編輯",
+        roleSupervisor: "指導老師"
     }
 };
 
@@ -47,9 +64,13 @@ function setLanguage(lang) {
         } else {
             // Revert to original HTML to preserve spacing and markup
             if (el.dataset.originalHtml !== undefined) {
-                el.classList.remove('fade-text');
-                if (el.typewriterTimeout) clearTimeout(el.typewriterTimeout);
-                el.innerHTML = el.dataset.originalHtml;
+                if (el.closest('#team-window')) {
+                    typewriterEffect(el, el.dataset.originalHtml.trim());
+                } else {
+                    el.classList.remove('fade-text');
+                    if (el.typewriterTimeout) clearTimeout(el.typewriterTimeout);
+                    el.innerHTML = el.dataset.originalHtml;
+                }
             }
         }
     });
@@ -593,6 +614,8 @@ if (btnGallery && galleryWindow) {
 
     closeGalleryBtn.addEventListener('click', () => {
         galleryWindow.classList.remove('slide-in');
+        const gdCol = document.getElementById('gallery-desc-column');
+        if (gdCol) gdCol.classList.remove('fast-wipe');
     });
 }
 
@@ -630,75 +653,8 @@ if (carouselSlides.length > 0) {
 }
 
 // ================================================================
-// GALLERY SCROLL-SPY & DYNAMIC DESCRIPTIONS
+// GALLERY SCROLL-SPY
 // ================================================================
-
-const galleryDescriptions = {
-    en: [
-        `<div class="news-headline" data-key="galleryDesc" style="margin-top: 0; border-bottom: 2.5px solid #222;">Description</div>
-        <p class="censored news-text">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto.</p>
-        <p class="censored news-text">Beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos sequi nesciunt.</p>
-        <div class="censored-img" style="height: 120px; margin-top: 10px; margin-bottom: 10px;"></div>
-        <p class="censored news-text">Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.</p>
-        <p class="censored news-text">Excepteur sint occaecat cupidatat non proident.</p>`,
-
-        `<div class="news-headline" data-key="galleryDesc" style="margin-top: 0; border-bottom: 2.5px solid #222;">Description</div>
-        <p class="censored news-text">Sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
-        <p class="censored news-text">Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
-        <div class="censored-img" style="height: 60px; margin-top: 5px; margin-bottom: 10px;"></div>`,
-
-        `<div class="news-headline" data-key="galleryDesc" style="margin-top: 0; border-bottom: 2.5px solid #222;">Description</div>
-        <p class="censored news-text">Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam.</p>
-        <p class="censored news-text">Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?</p>`,
-
-        `<div class="news-headline" data-key="galleryDesc" style="margin-top: 0; border-bottom: 2.5px solid #222;">Description</div>
-        <p class="censored news-text">Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae.</p>
-        <p class="censored news-text">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        <div class="censored-img" style="height: 90px; margin-top: 10px; margin-bottom: 10px; transform: rotate(1deg);"></div>`,
-
-        `<div class="news-headline" data-key="galleryDesc" style="margin-top: 0; border-bottom: 2.5px solid #222;">Description</div>
-        <p class="censored news-text">Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        <p class="censored news-text">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-        <div class="censored-img" style="height: 50px; margin-top: 5px; margin-bottom: 5px;"></div>`,
-
-        `<div class="news-headline" data-key="galleryDesc" style="margin-top: 0; border-bottom: 2.5px solid #222;">Description</div>
-        <p class="censored news-text">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-        <p class="censored news-text">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>`
-    ],
-    // As placeholder for Chinese, reuse EN layout since translation was unspecified. 
-    // Data-key "galleryDesc" will translate the title automatically!
-    zh: [
-        `<div class="news-headline" data-key="galleryDesc" style="margin-top: 0; border-bottom: 2.5px solid #222;">Description</div>
-        <p class="censored news-text">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto.</p>
-        <p class="censored news-text">Beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos sequi nesciunt.</p>
-        <div class="censored-img" style="height: 120px; margin-top: 10px; margin-bottom: 10px;"></div>
-        <p class="censored news-text">Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.</p>
-        <p class="censored news-text">Excepteur sint occaecat cupidatat non proident.</p>`,
-
-        `<div class="news-headline" data-key="galleryDesc" style="margin-top: 0; border-bottom: 2.5px solid #222;">Description</div>
-        <p class="censored news-text">Sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
-        <p class="censored news-text">Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
-        <div class="censored-img" style="height: 60px; margin-top: 5px; margin-bottom: 10px;"></div>`,
-
-        `<div class="news-headline" data-key="galleryDesc" style="margin-top: 0; border-bottom: 2.5px solid #222;">Description</div>
-        <p class="censored news-text">Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam.</p>
-        <p class="censored news-text">Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?</p>`,
-
-        `<div class="news-headline" data-key="galleryDesc" style="margin-top: 0; border-bottom: 2.5px solid #222;">Description</div>
-        <p class="censored news-text">Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae.</p>
-        <p class="censored news-text">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        <div class="censored-img" style="height: 90px; margin-top: 10px; margin-bottom: 10px; transform: rotate(1deg);"></div>`,
-
-        `<div class="news-headline" data-key="galleryDesc" style="margin-top: 0; border-bottom: 2.5px solid #222;">Description</div>
-        <p class="censored news-text">Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        <p class="censored news-text">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-        <div class="censored-img" style="height: 50px; margin-top: 5px; margin-bottom: 5px;"></div>`,
-
-        `<div class="news-headline" data-key="galleryDesc" style="margin-top: 0; border-bottom: 2.5px solid #222;">Description</div>
-        <p class="censored news-text">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-        <p class="censored news-text">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>`
-    ]
-};
 
 document.addEventListener("DOMContentLoaded", () => {
     const galleryDots = document.querySelectorAll('.g-dot');
@@ -707,46 +663,74 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Store original HTML of description column directly for fallback
     if (galleryDescColumn) {
-        // Init original HTML for Language toggles to work nicely natively
         galleryDescColumn.dataset.originalHtml = galleryDescColumn.innerHTML;
     }
 
     const galleryObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+            if (entry.isIntersecting && entry.intersectionRatio >= 0.1) {
                 const index = Array.from(snapContainers).indexOf(entry.target);
-                if (index !== -1 && index < galleryDescriptions.en.length) {
+                if (index !== -1) {
+
+                    // 0. Update active image class (push 20px up)
+                    snapContainers.forEach(c => c.classList.remove('active'));
+                    entry.target.classList.add('active');
 
                     // 1. Update active dot
                     galleryDots.forEach(dot => dot.classList.remove('active'));
                     if (galleryDots[index]) galleryDots[index].classList.add('active');
-
-                    // 2. Update description text from array
-                    if (galleryDescColumn) {
-                        // Use English as the DOM baseline to retain nice English styles,
-                        // and assign it as the new dataset.originalHtml so language toggler handles it
-                        const newHtml = galleryDescriptions.en[index];
-                        galleryDescColumn.innerHTML = newHtml;
-                        galleryDescColumn.dataset.originalHtml = newHtml;
-
-                        // 3. Re-apply translation immediately if currently Chinese
-                        if (currentLang === 'zh') {
-                            const headline = galleryDescColumn.querySelector('[data-key="galleryDesc"]');
-                            if (headline && translations['zh']['galleryDesc']) {
-                                // Fast forward typewriter for seamless scroll feel
-                                headline.innerText = translations['zh']['galleryDesc'];
-                            }
-                        }
-                    }
                 }
             }
         });
     }, {
         root: document.querySelector('.image-roll'),
-        threshold: 0.5 // Trigger when midway scrolled
+        threshold: 0.1 // Trigger even faster
     });
 
     snapContainers.forEach(container => {
         galleryObserver.observe(container);
     });
+
+    // Initialize first image as active
+    if (snapContainers.length > 0) {
+        snapContainers[0].classList.add('active');
+    }
+
+    // Zoom Logic
+    const zoomOverlay = document.getElementById('image-zoom-overlay');
+    const zoomedImage = document.getElementById('zoomed-image');
+    const closeZoomBtn = document.getElementById('close-zoom-btn');
+
+    document.querySelectorAll('.zoomable-img').forEach(imgContainer => {
+        imgContainer.addEventListener('click', (e) => {
+            e.stopPropagation(); // prevent the container scroll-into-view
+            const bgImage = imgContainer.style.backgroundImage;
+            if (bgImage && bgImage !== 'none') {
+                const url = bgImage.slice(4, -1).replace(/["']/g, "");
+                zoomedImage.src = url;
+                zoomOverlay.classList.add('show');
+
+                const zoomNotif = document.getElementById('zoom-notification');
+                if (zoomNotif) {
+                    zoomNotif.classList.remove('show');
+                    void zoomNotif.offsetWidth; // Reflow
+                    zoomNotif.classList.add('show');
+                }
+            }
+        });
+    });
+
+    if (closeZoomBtn) {
+        closeZoomBtn.addEventListener('click', () => {
+            zoomOverlay.classList.remove('show');
+        });
+    }
+
+    if (zoomOverlay) {
+        zoomOverlay.addEventListener('click', (e) => {
+            if (e.target === zoomOverlay) {
+                zoomOverlay.classList.remove('show');
+            }
+        });
+    }
 });
