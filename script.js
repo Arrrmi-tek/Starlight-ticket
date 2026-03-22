@@ -14,7 +14,7 @@ const translations = {
         whatWeKnow: "目前所知",
         galleryDesc: "描述",
         galleryDescText: "我們將這部動畫的環境場景製作得非常精緻，同時在避免過度空曠與不被次要物件塞滿之間，取得了完美的平衡。我們用來提升動畫場景美感的主要元素，在於冷暖光線的運用，以及為場景中的物件搭配高品質的材質貼圖。整體而言，在製作這部動畫的過程中，隨著時間的推移我們學到了很多並持續進步，例如與現實生活中的真實樣貌相比，我們更傾向於為這些環境營造出一種更「宏大／高品質」的氛圍。",
-        synopsisDescTitle: "主要重點是...",
+        synopsisDescTitle: "劇情大綱",
         galleryHeader: "畫廊",
         zoomOutMsg: "點擊相框外任意處即可縮小",
         synopsisText: "生活拮据的女主角在某夜抓住了翻身的機會，殊不知在背後卻有不法份子試圖利用這次的機會，做些不好的事情。最後主角也成功抓住了可以讓她從谷底翻身的票券，準備前往屬於她的星光航班，實現夢想。",
@@ -36,12 +36,12 @@ const translations = {
 
 let currentLang = 'en';
 
-// Save original HTML immediately before any modifications
+// Save original text immediately before any modifications
 document.querySelectorAll('[data-key]').forEach(el => {
-    el.dataset.originalHtml = el.innerHTML;
+    el.dataset.originalText = el.innerText;
 });
 const langInd = document.querySelector('.lang-indicator');
-if (langInd) langInd.dataset.originalHtml = langInd.innerHTML;
+if (langInd) langInd.dataset.originalText = langInd.innerText;
 
 function setLanguage(lang) {
     currentLang = lang;
@@ -62,15 +62,8 @@ function setLanguage(lang) {
                 typewriterEffect(el, translations['zh'][key]);
             }
         } else {
-            // Revert to original HTML to preserve spacing and markup
-            if (el.dataset.originalHtml !== undefined) {
-                if (el.closest('#team-window')) {
-                    typewriterEffect(el, el.dataset.originalHtml.trim());
-                } else {
-                    el.classList.remove('fade-text');
-                    if (el.typewriterTimeout) clearTimeout(el.typewriterTimeout);
-                    el.innerHTML = el.dataset.originalHtml;
-                }
+            if (el.dataset.originalText !== undefined) {
+                typewriterEffect(el, el.dataset.originalText);
             }
         }
     });
@@ -79,10 +72,8 @@ function setLanguage(lang) {
         if (lang === 'zh') {
             typewriterEffect(langInd, '中文');
         } else {
-            if (langInd.dataset.originalHtml !== undefined) {
-                langInd.classList.remove('fade-text');
-                if (langInd.typewriterTimeout) clearTimeout(langInd.typewriterTimeout);
-                langInd.innerHTML = langInd.dataset.originalHtml;
+            if (langInd.dataset.originalText !== undefined) {
+                typewriterEffect(langInd, langInd.dataset.originalText);
             }
         }
     }
@@ -145,12 +136,33 @@ function typewriterEffect(element, text) {
         clearTimeout(element.typewriterTimeout);
     }
     element.innerText = '';
+    
+    let delay = 800 / text.length;
+    if (delay > 30) delay = 30; // Max 30ms per char for short words
+    if (delay < 5) delay = 5; // Minimum 5ms
+    
     let i = 0;
+    let currentText = '';
     function typeNextChar() {
         if (i < text.length) {
-            element.innerText += text.charAt(i);
+            currentText += text.charAt(i);
+            element.innerText = currentText;
             i++;
-            element.typewriterTimeout = setTimeout(typeNextChar, 50);
+            element.typewriterTimeout = setTimeout(typeNextChar, delay);
+        } else {
+            // End of typing: add blinking cursor
+            const cursor = document.createElement('span');
+            cursor.className = 'blinking-cursor';
+            cursor.innerText = '_';
+            cursor.style.display = 'inline-block';
+            cursor.style.marginLeft = '2px';
+            cursor.style.transition = 'opacity 1s ease';
+            element.appendChild(cursor);
+            
+            // Fade out after a few seconds
+            setTimeout(() => {
+                cursor.style.opacity = '0';
+            }, 3000);
         }
     }
     typeNextChar();
@@ -606,10 +618,12 @@ if (btnSynopsis && synopsisWindow) {
         e.preventDefault();
         hideAllWindows();
         synopsisWindow.classList.add('slide-in');
+        togglePurpleLighting(true);
     });
 
     closeSynopsisBtn.addEventListener('click', () => {
         synopsisWindow.classList.remove('slide-in');
+        togglePurpleLighting(false);
     });
 }
 
@@ -623,12 +637,14 @@ if (btnGallery && galleryWindow) {
         e.preventDefault();
         hideAllWindows();
         galleryWindow.classList.add('slide-in');
+        togglePurpleLighting(true);
     });
 
     closeGalleryBtn.addEventListener('click', () => {
         galleryWindow.classList.remove('slide-in');
         const gdCol = document.getElementById('gallery-desc-column');
         if (gdCol) gdCol.classList.remove('fast-wipe');
+        togglePurpleLighting(false);
     });
 }
 
@@ -642,10 +658,12 @@ if (btnTeam && teamWindow) {
         e.preventDefault();
         hideAllWindows();
         teamWindow.classList.add('slide-in');
+        togglePurpleLighting(true);
     });
 
     closeTeamBtn.addEventListener('click', () => {
         teamWindow.classList.remove('slide-in');
+        togglePurpleLighting(false);
     });
 }
 

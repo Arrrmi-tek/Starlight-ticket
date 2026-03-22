@@ -78,7 +78,7 @@ body {
     background: radial-gradient(circle at 85% 90%, rgba(255, 0, 128, 0.4) 0%, rgba(255, 0, 128, 0.15) 50%, rgba(255, 0, 128, 0) 100%);
     opacity: 1;
     will-change: opacity;
-    transition: opacity 1.5s ease;
+    transition: opacity 3s ease;
 }
 
 body.video-active .window-frame-effect::before {
