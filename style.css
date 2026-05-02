@@ -1,5 +1,5 @@
 /* --- FONTS --- */
-@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Noto+Sans+TC:wght@900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Great+Vibes&family=Noto+Sans+TC:wght@900&family=Liu+Jian+Mao+Cao&display=swap');
 
 /* --- RESET --- */
 * {
@@ -364,17 +364,16 @@ body.video-active .window-frame-effect::before {
 /* --- TICKET CONTAINER --- */
 .ticket-container {
     position: absolute;
-    top: 40%;
-    /* Pushed straight up onto the blank space (the window frame) */
-    left: 37%;
-    /* Pushed to the left side to avoid overlapping the newspapers */
+    top: calc(40% - 30px);
+    left: calc(40% - 30px);
     transform: translate(-50%, -50%) rotate(-5deg) scale(0.5156);
     /* Reverted scaling and skew per user request */
+    transform-origin: center center;
     z-index: 6;
     /* Lowered below the newspapers (wrapper is 7) */
-    width: 250vw;
-    max-width: 1700px;
-    height: 75vh;
+    width: calc(250vw + 83px);
+    max-width: 1783px;
+    height: calc(75vh + 50px);
     display: flex;
     box-shadow: 20px 30px 40px rgba(0, 0, 0, 0.85);
     /* Hard Cast Shadow matching top-left light source */
@@ -421,7 +420,7 @@ body.video-active .window-frame-effect::before {
 /* --- TICKET DYNAMIC POSITIONS --- */
 .ticket-pos-center {
     top: 40%;
-    left: 37%;
+    left: calc(37% - 30px);
     transform: translate(-50%, -50%) rotate(-5deg) scale(0.5156);
     opacity: 1;
     z-index: 10;
@@ -429,7 +428,7 @@ body.video-active .window-frame-effect::before {
 
 .ticket-pos-docked {
     top: 85%;
-    left: 55%;
+    left: calc(55% - 30px);
     transform: translate(-50%, -50%) rotate(-2deg) scale(0.35);
     opacity: 0.95;
     z-index: 10;
@@ -446,7 +445,7 @@ body.video-active .window-frame-effect::before {
 
 .ticket-pos-off-bottom {
     top: 150vh;
-    left: 37%;
+    left: calc(37% - 30px);
     transform: translate(-50%, -50%) rotate(10deg) scale(0.5156);
     opacity: 0;
     z-index: 6;
@@ -455,7 +454,7 @@ body.video-active .window-frame-effect::before {
 /* --- NEWSPAPER DYNAMIC POSITIONS --- */
 .synopsis-pos-docked {
     top: 85%;
-    left: 40%;
+    left: calc(40% - 30px);
     transform: translate(-50%, -50%) rotate(-15deg) scale(1.6);
     z-index: 8;
     opacity: 1;
@@ -463,7 +462,7 @@ body.video-active .window-frame-effect::before {
 
 .synopsis-pos-center {
     top: 40%;
-    left: 37%;
+    left: calc(37% - 30px);
     transform: translate(-50%, -50%) rotate(-2deg) scale(1.6);
     z-index: 10;
     opacity: 1;
@@ -471,7 +470,7 @@ body.video-active .window-frame-effect::before {
 
 .synopsis-pos-off-top {
     top: -60vh;
-    left: 37%;
+    left: calc(37% - 30px);
     transform: translate(-50%, -50%) rotate(5deg) scale(1.6);
     z-index: 8;
     opacity: 0;
@@ -495,7 +494,7 @@ body.video-active .window-frame-effect::before {
 
 .team-pos-center {
     top: 40%;
-    left: 37%;
+    left: calc(37% - 30px);
     transform: translate(-50%, -50%) rotate(2deg) scale(2.2);
     z-index: 10;
     opacity: 1;
@@ -503,7 +502,7 @@ body.video-active .window-frame-effect::before {
 
 .team-pos-off-top {
     top: -60vh;
-    left: 37%;
+    left: calc(37% - 30px);
     transform: translate(-50%, -50%) rotate(5deg) scale(2.2);
     z-index: 9;
     opacity: 0;
@@ -575,6 +574,16 @@ body.lang-zh .nav-item.active.highlight-btn {
 
 body.lang-en .nav-item.active.highlight-btn {
     font-size: calc(1.1rem + 1.25vw) !important;
+}
+
+p.censored.news-text {
+    background-color: transparent !important;
+    color: rgba(30, 30, 30, 0.8) !important;
+    filter: blur(2.5px);
+}
+
+body.lang-en .news-text[data-key] {
+    text-align: justify;
 }
 
 /* --- INFO CONTAINERS --- */
@@ -709,8 +718,8 @@ body.lang-en .nav-item.active.highlight-btn {
     flex-direction: column;
     font-family: 'Georgia', 'Times New Roman', serif;
     /* Square Border within Torn Edges - UPDATED to be faded */
-    border: 4px solid rgba(20, 20, 20, 0.3);
-    /* Faded border */
+    border: none;
+    /* Removed solid grey border at edges */
     padding: 20px;
     box-sizing: border-box;
     background-color: transparent;
@@ -746,7 +755,7 @@ body.lang-en .nav-item.active.highlight-btn {
     /* Match folded height (Half of 110vh) */
     top: 85%;
     /* Match new top position */
-    left: 40%;
+    left: calc(40% - 30px);
 
     /* Match the Folded Clip Path (Straight Top) */
     clip-path: polygon(0% 0%, 100% 0%,
@@ -887,7 +896,7 @@ body.lang-en .nav-item.active.highlight-btn {
     border-bottom: 1px solid rgba(30, 30, 30, 0.4);
     line-height: 1.1;
     font-family: 'Times New Roman', serif;
-    color: rgba(30, 30, 30, 0.6);
+    color: rgba(30, 30, 30, 0.9);
     filter: blur(3.5px);
     /* Very blurry */
 }
@@ -953,7 +962,7 @@ body.lang-en .nav-item.active.highlight-btn {
     text-align: center;
     line-height: 1;
     font-family: 'Times New Roman', serif;
-    color: rgba(20, 20, 20, 0.7);
+    color: rgba(20, 20, 20, 1);
     margin-bottom: 5px;
     padding-top: 10px;
     padding-bottom: 8px;
@@ -1005,12 +1014,12 @@ body.lang-en .nav-item.active.highlight-btn {
 .censored {
     font-size: 0.8rem;
     line-height: 1.6em;
-    color: rgba(30, 30, 30, 0.65);
+    color: rgba(30, 30, 30, 0.95);
     /* Visible text color (Faded) */
     filter: blur(3.5px);
     /* Blurry effect */
     user-select: none;
-    opacity: 0.8;
+    opacity: 1;
 }
 
 .censored-img {
@@ -1018,12 +1027,14 @@ body.lang-en .nav-item.active.highlight-btn {
     /* Placeholder content */
     background: #222;
     /* simple dark background to ensure visibility */
-    border: 1px solid #111;
+    border: none !important;
     position: relative;
     overflow: hidden;
     filter: blur(1.5px) grayscale(0.5);
     /* Less blur for images so they are visible */
     opacity: 0.8;
+    -webkit-mask-image: radial-gradient(ellipse at center, black 50%, transparent 100%);
+    mask-image: radial-gradient(ellipse at center, black 50%, transparent 100%);
 }
 
 /* Dark Lighting Overlay for Info Cards and Paper Layers */
@@ -1059,7 +1070,7 @@ body.video-active .paper-layer::after {
     top: 105%;
     /* Pushed down closer to bottom */
     /* Positioned for bottom half visibility */
-    left: 55%;
+    left: calc(55% - 30px);
     /* Pushed slightly back leftwards due to scaling */
     /* Pushed right */
     transform: translate(-50%, -50%) rotate(-15deg) scale(1.6);
@@ -1150,7 +1161,7 @@ body.video-active .paper-layer::after {
     height: 250px;
     /* Much bigger single image */
     flex: none;
-    border: 1px solid rgba(30, 30, 30, 0.5);
+    border: none !important;
     /* Faded border */
     margin: 0;
     opacity: 0.9;
@@ -1247,13 +1258,9 @@ body.video-active .paper-layer::after {
         /* Large Crease 1 */
         linear-gradient(15deg, transparent 40%, rgba(0, 0, 0, 0.08) 45%, transparent 55%),
         /* Large Crease 2 */
-        linear-gradient(-25deg, transparent 30%, rgba(0, 0, 0, 0.06) 35%, transparent 45%),
-        /* SVG Noise */
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.4'/%3E%3C/svg%3E");
+        linear-gradient(-25deg, transparent 30%, rgba(0, 0, 0, 0.06) 35%, transparent 45%);
 
-    background-size: cover, cover, 300px 300px;
-    filter: contrast(120%) brightness(1.1);
-    will-change: transform;
+    background-size: cover;
 }
 
 .info-card.vertical .newspaper-content {
@@ -1487,8 +1494,7 @@ body.video-active .ticket-container::after {
     justify-content: center;
     align-items: flex-start;
     flex-grow: 1;
-    gap: 30px;
-    /* Reduced from 40px */
+    gap: 15px;
     width: 100%;
 }
 
@@ -1502,7 +1508,7 @@ body.video-active .ticket-container::after {
     align-items: center;
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     width: 100%;
-    padding-left: 20px;
+    padding: 8px 0 8px 20px;
 }
 
 /* --- TEXT STYLING --- */
@@ -1647,6 +1653,22 @@ body.lang-en .nav-text[data-key="synopsis"]+.arrow-icon {
 body.lang-en .nav-item.active .nav-text[data-key="trailer"]+.arrow-icon,
 body.lang-en .nav-item.active .nav-text[data-key="synopsis"]+.arrow-icon {
     margin-left: 50px;
+}
+
+/* ================================================================
+   POTATO MODE OVERRIDES
+   ================================================================ 
+*/
+body.potato-mode .content-window {
+    transition: none !important;
+}
+
+body.potato-mode .close-btn {
+    transition: none !important;
+}
+
+body.lang-en #gallery-window {
+    height: 70vh !important;
 }
 
 /* ================================================================
@@ -1935,6 +1957,10 @@ body.lang-en .lang-indicator {
     transform: scale(1.02);
 }
 
+body.potato-mode #potato-icon circle {
+    fill: #000 !important;
+}
+
 .mute-text-wrapper {
     overflow: hidden;
     display: flex;
@@ -2206,7 +2232,7 @@ body.lang-en .lang-indicator {
 
 .video-window.slide-in {
     top: 45%;
-    left: 45%;
+    left: calc(40% - 30px);
     /* Slightly off center to match scene composition */
     transform: translate(-50%, -50%) rotate(-3deg);
 }
@@ -2230,6 +2256,21 @@ body.lang-en .lang-indicator {
     z-index: 10;
     width: 40px;
     height: 40px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease, color 0.3s ease;
+}
+
+.slide-in .close-btn {
+    opacity: 1;
+    pointer-events: auto;
+    transition: opacity 0.5s ease 1s, color 0.3s ease;
+}
+
+.image-zoom-overlay.show .close-btn {
+    opacity: 1;
+    pointer-events: auto;
+    transition: opacity 0.5s ease 0s, color 0.3s ease;
 }
 
 .close-btn svg {
@@ -2277,7 +2318,7 @@ body.lang-en .lang-indicator {
     box-shadow: -15px 25px 35px rgba(0, 0, 0, 0.85);
     z-index: 10;
     /* Lowered so rain drops and lighting cast shadows over it */
-    transition: top 1.2s cubic-bezier(0.2, 0.8, 0.2, 1), left 1.2s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition: height 0.5s ease, top 1.2s cubic-bezier(0.2, 0.8, 0.2, 1), left 1.2s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
     border: none;
     padding: 0;
 }
@@ -2347,15 +2388,19 @@ body.lang-en .lang-indicator {
     transform: translate(-50%, -50%) rotate(-1deg) scale(1.3) !important;
 }
 
-.content-window.slide-in .newspaper-content .censored,
-.content-window.slide-in .newspaper-content .news-text,
-.content-window.slide-in .newspaper-content .news-headline,
-.content-window.slide-in .newspaper-content .news-subhead,
-.content-window.slide-in .newspaper-content .img-caption,
-.content-window.slide-in .newspaper-content .censored-img {
+.content-window:not(.show-content) .newspaper-content {
+    display: none;
+}
+
+.content-window.show-content .newspaper-content .censored,
+.content-window.show-content .newspaper-content .news-text,
+.content-window.show-content .newspaper-content .news-headline,
+.content-window.show-content .newspaper-content .news-subhead,
+.content-window.show-content .newspaper-content .img-caption,
+.content-window.show-content .newspaper-content .censored-img {
     animation: unblurAndWipe 1.8s cubic-bezier(0.25, 1, 0.5, 1) both;
-    animation-delay: 0.9s;
-    /* Wait for sliding window to mostly settle before wiping text in */
+    animation-delay: 0.1s;
+    /* Reduced delay since the content is already delayed by 1.2s JS timer */
 }
 
 /* Thicker separating border for columns */
@@ -2503,6 +2548,8 @@ body:has(.content-window.slide-in) .static-rain-container {
 /* Zoom feature */
 .zoomable-img {
     cursor: zoom-in !important;
+    mask-image: none !important;
+    -webkit-mask-image: none !important;
 }
 
 .img-zoom-badge {
@@ -2608,8 +2655,6 @@ body.lang-en #team-window .role-text {
 body.lang-zh #team-window .role-text {
     font-size: 1.35rem !important;
     /* Preserves larger size for ZH */
-    font-weight: 900 !important;
-    /* Bolder styling for Chinese characters */
     flex-shrink: 0;
 }
 
@@ -2618,4 +2663,59 @@ body.lang-zh #team-window .role-text {
     border-bottom: 3.5px dotted #111;
     margin-left: 8px;
     opacity: 0.8;
+}
+/* TICKET WIDTH OVERRIDES */
+.ticket-main { flex: 0 0 calc((100% - 50px) * 0.71428 + 25px) !important; }
+.ticket-stub { flex: 0 0 calc((100% - 50px) * 0.28572 + 25px) !important; }
+
+body.window-open-rain .raindrop, body.window-open-rain .fast-raindrop, body.window-open-rain .static-raindrop { opacity: 0 !important; transition: opacity 1s ease !important; }
+body.lang-en .nav-text[data-key="vrExhibition"] + .arrow-icon, body.lang-en .nav-text[data-key="gallery"] + .arrow-icon { margin-left: 30px; }
+body.lang-en .nav-item.active .nav-text[data-key="vrExhibition"] + .arrow-icon, body.lang-en .nav-item.active .nav-text[data-key="gallery"] + .arrow-icon { margin-left: 50px; }
+
+#synopsis-window .newspaper-content { clip-path: polygon(0% 0%, 100% 0%, 98% 10%, 100% 20%, 99% 30%, 100% 40%, 98% 50%, 100% 60%, 99% 70%, 100% 80%, 98% 90%, 100% 100%, 90% 98%, 80% 100%, 70% 99%, 60% 100%, 50% 98%, 40% 100%, 30% 99%, 20% 100%, 10% 98%, 0% 100%); }
+#gallery-window .newspaper-content { clip-path: polygon(0% 100%, 100% 100%, 100% 0%, 90% 2%, 80% 0%, 70% 1%, 60% 0%, 50% 2%, 40% 0%, 30% 1%, 20% 0%, 10% 2%, 0% 0%, 2% 10%, 0% 20%, 1% 30%, 0% 40%, 2% 50%, 0% 60%, 1% 70%, 0% 80%, 2% 90%); }
+#team-window .newspaper-content { clip-path: polygon(0% 0%, 100% 0%, 98% 10%, 100% 20%, 99% 30%, 100% 40%, 98% 50%, 100% 60%, 99% 70%, 100% 80%, 98% 90%, 100% 100%, 90% 98%, 80% 100%, 70% 99%, 60% 100%, 50% 98%, 40% 100%, 30% 99%, 20% 100%, 10% 98%, 0% 100%, 2% 90%, 0% 80%, 1% 70%, 0% 60%, 2% 50%, 0% 40%, 1% 30%, 0% 20%, 2% 10%); }
+
+body.lang-en #gallery-window .newspaper-header { margin-left: -50px; }
+body.lang-zh #gallery-window .newspaper-header { margin-left: -15px; }
+
+#gallery-window .image-roll,
+#gallery-window #gallery-dots {
+    transition: height 0.5s ease, margin-top 0.5s ease, padding-top 0.5s ease;
+}
+
+body.lang-en #gallery-window .image-roll,
+body.lang-en #gallery-window #gallery-dots {
+    height: 85% !important;
+    margin-top: 5vh !important;
+}
+
+.team-sticky-note {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    background-color: #fceea7;
+    box-shadow: -5px 10px 20px rgba(0,0,0,0.4);
+    transform: rotate(-5deg);
+    z-index: 50;
+    padding: 15px 30px;
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.8rem;
+    color: #222;
+    pointer-events: none;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+body.potato-mode .content-window.show-content .newspaper-content .censored,
+body.potato-mode .content-window.show-content .newspaper-content .news-text,
+body.potato-mode .content-window.show-content .newspaper-content .news-headline,
+body.potato-mode .content-window.show-content .newspaper-content .news-subhead,
+body.potato-mode .content-window.show-content .newspaper-content .img-caption,
+body.potato-mode .content-window.show-content .newspaper-content .censored-img {
+    animation: none !important;
+    opacity: 1 !important;
+    clip-path: none !important;
 }

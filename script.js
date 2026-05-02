@@ -16,7 +16,7 @@ const translations = {
         galleryDescText: "我們將這部動畫的環境場景製作得非常精緻，同時在避免過度空曠與不被次要物件塞滿之間，取得了完美的平衡。我們用來提升動畫場景美感的主要元素，在於冷暖光線的運用，以及為場景中的物件搭配高品質的材質貼圖。整體而言，在製作這部動畫的過程中，隨著時間的推移我們學到了很多並持續進步，例如與現實生活中的真實樣貌相比，我們更傾向於為這些環境營造出一種更「宏大／高品質」的氛圍。",
         synopsisDescTitle: "劇情大綱",
         galleryHeader: "畫廊",
-        zoomOutMsg: "點擊相框外任意處即可縮小",
+        zoomOutMsg: "點擊相框外任意處或按 Esc 鍵即可縮小",
         synopsisText: "生活拮据的女主角在某夜抓住了翻身的機會，殊不知在背後卻有不法份子試圖利用這次的機會，做些不好的事情。最後主角也成功抓住了可以讓她從谷底翻身的票券，準備前往屬於她的星光航班，實現夢想。",
         roleWeb: "網頁設計",
         roleLight: "燈光設計",
@@ -26,22 +26,78 @@ const translations = {
         rolePost: "後期製作",
         roleProj: "專案管理",
         roleProg: "程式設計",
-        roleCam: "攝影機",
+        roleCam: "攝影",
         roleMusic: "音樂/音效設計",
         roleFilmEdit: "影片剪輯",
         roleImageEdit: "影像編輯",
-        roleSupervisor: "指導老師"
+        roleSupervisor: "指導老師",
+        potatoMode: "低效能模式",
+        vrExhibition: "VR 展覽",
+        escShortcutMsg: "您也可以按下 Esc 鍵關閉視窗",
+        vrConfirmMsg: "要在新分頁開啟網站嗎？",
+        yes: "是",
+        no: "否",
+        potatoTutorial: "網站效能緩慢/卡頓？開啟低效能模式/馬鈴薯模式！",
+        gotIt: "了解"
     }
 };
 
 let currentLang = 'en';
 
+// ================================================================
+// POTATO MODE LOGIC
+// ================================================================
+let isPotatoMode = sessionStorage.getItem('isPotatoMode') === 'true';
+
+function applyPotatoModeVisuals() {
+    const potatoPath = document.getElementById('potato-path');
+    if (!potatoPath) return;
+
+    if (isPotatoMode) {
+        document.body.classList.add('potato-mode');
+        potatoPath.setAttribute('fill', 'currentColor');
+    } else {
+        document.body.classList.remove('potato-mode');
+        potatoPath.setAttribute('fill', 'none');
+    }
+
+    const potatoTextEl = document.getElementById('potato-text');
+    if (potatoTextEl) {
+        const baseText = currentLang === 'zh' ? translations['zh']['potatoMode'] : (potatoTextEl.dataset.originalText || "Low-performance mode");
+        const statusText = isPotatoMode ? " (ON)" : " (OFF)";
+        typewriterEffect(potatoTextEl, baseText + statusText);
+    }
+}
+
+function removePercentOfElements(selector, percent) {
+    const elements = document.querySelectorAll(selector);
+    const toRemove = Math.floor(elements.length * (percent / 100));
+    const elementsArray = Array.from(elements);
+    elementsArray.sort(() => Math.random() - 0.5);
+    for (let i = 0; i < toRemove; i++) {
+        if (elementsArray[i] && elementsArray[i].parentNode) {
+            elementsArray[i].remove();
+        }
+    }
+}
+
+function togglePotatoMode() {
+    const wasPotatoMode = isPotatoMode;
+    isPotatoMode = !isPotatoMode;
+    sessionStorage.setItem('isPotatoMode', isPotatoMode);
+    applyPotatoModeVisuals();
+
+    if (isPotatoMode && !wasPotatoMode) {
+        removePercentOfElements('.raindrop, .fast-raindrop, .static-raindrop', 80);
+    }
+}
+
 // Save original text immediately before any modifications
 document.querySelectorAll('[data-key]').forEach(el => {
-    el.dataset.originalText = el.innerText;
+    el.dataset.originalText = el.innerText.trim();
 });
 const langInd = document.querySelector('.lang-indicator');
-if (langInd) langInd.dataset.originalText = langInd.innerText;
+if (langInd) langInd.dataset.originalText = langInd.innerText.trim();
 
 function setLanguage(lang) {
     currentLang = lang;
@@ -59,11 +115,15 @@ function setLanguage(lang) {
         const key = el.getAttribute('data-key');
         if (lang === 'zh') {
             if (translations['zh'][key]) {
-                typewriterEffect(el, translations['zh'][key]);
+                let textToType = translations['zh'][key];
+                if (key === 'potatoMode') textToType += isPotatoMode ? ' (ON)' : ' (OFF)';
+                typewriterEffect(el, textToType);
             }
         } else {
             if (el.dataset.originalText !== undefined) {
-                typewriterEffect(el, el.dataset.originalText);
+                let textToType = el.dataset.originalText;
+                if (key === 'potatoMode') textToType += isPotatoMode ? ' (ON)' : ' (OFF)';
+                typewriterEffect(el, textToType);
             }
         }
     });
@@ -136,11 +196,11 @@ function typewriterEffect(element, text) {
         clearTimeout(element.typewriterTimeout);
     }
     element.innerText = '';
-    
+
     let delay = 800 / text.length;
     if (delay > 30) delay = 30; // Max 30ms per char for short words
     if (delay < 5) delay = 5; // Minimum 5ms
-    
+
     let i = 0;
     let currentText = '';
     function typeNextChar() {
@@ -153,12 +213,12 @@ function typewriterEffect(element, text) {
             // End of typing: add blinking cursor
             const cursor = document.createElement('span');
             cursor.className = 'blinking-cursor';
-            cursor.innerText = '_';
-            cursor.style.display = 'inline-block';
+            cursor.innerText = '';
+            cursor.style.display = 'none';
             cursor.style.marginLeft = '2px';
             cursor.style.transition = 'opacity 1s ease';
             element.appendChild(cursor);
-            
+
             // Fade out after a few seconds
             setTimeout(() => {
                 cursor.style.opacity = '0';
@@ -243,7 +303,7 @@ scheduleLightning();
 // AUDIO MUTE / UNMUTE LOGIC
 // ================================================================
 const BASE_VOLUME = 0.375; // Lowered by 25% from 0.50
-let isMuted = false; // Default to unmuted
+let isMuted = sessionStorage.getItem('isMuted') === 'true'; // Default to session storage
 
 let fadeInterval = null;
 
@@ -272,31 +332,34 @@ function fadeAudio(audioElement, targetVolume, durationMs) {
     }, stepTime);
 }
 
-function toggleMute() {
-    isMuted = !isMuted;
-
+function applyMuteVisuals() {
     const muteBtn = document.getElementById('mute-btn');
+    if (!muteBtn) return;
     const icon = muteBtn.querySelector('svg');
     const textSpan = muteBtn.querySelector('.mute-text');
     const rainAudio = document.getElementById('rain-audio');
 
-    // Simple path swap for Speaker vs Speaker with Cross
     if (isMuted) {
         if (rainAudio) rainAudio.pause();
-        // Mute icon (volume off) - Meaning it IS muted right now, click to unmute
         icon.innerHTML = '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>';
-        // Change text to 'Unmute'
-        textSpan.innerText = currentLang === 'zh' ? '取消靜音閃電與雨聲效果' : 'Unmute lightning and rain SFX';
+        if (textSpan) textSpan.innerText = currentLang === 'zh' ? '取消靜音閃電與雨聲效果' : 'Unmute lightning and rain SFX';
     } else {
-        if (rainAudio) {
-            clearInterval(fadeInterval); // Stop any ongoing fade
-            rainAudio.volume = BASE_VOLUME; // Default volume
-            rainAudio.play().catch(e => console.log("Audio play failed:", e));
-        }
-        // Unmute icon (volume up) - Meaning audio is on, click to mute
         icon.innerHTML = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
-        // Change text back to 'Mute'
-        textSpan.innerText = currentLang === 'zh' ? '靜音閃電與雨聲效果' : 'Mute lightning and rain SFX';
+        if (textSpan) textSpan.innerText = currentLang === 'zh' ? '靜音閃電與雨聲效果' : 'Mute lightning and rain SFX';
+    }
+}
+
+function toggleMute() {
+    isMuted = !isMuted;
+    sessionStorage.setItem('isMuted', isMuted);
+    
+    applyMuteVisuals();
+
+    const rainAudio = document.getElementById('rain-audio');
+    if (!isMuted && rainAudio) {
+        clearInterval(fadeInterval); // Stop any ongoing fade
+        rainAudio.volume = BASE_VOLUME; // Default volume
+        rainAudio.play().catch(e => console.log("Audio play failed:", e));
     }
 }
 
@@ -308,10 +371,32 @@ window.addEventListener('DOMContentLoaded', () => {
         if (siteIcon) {
             siteIcon.remove();
         }
+        
+        // Potato Mode Tutorial Overlay Logic
+        if (!sessionStorage.getItem('potatoTutorialShown')) {
+            const tutorialOverlay = document.getElementById('potato-tutorial-overlay');
+            if (tutorialOverlay) {
+                tutorialOverlay.style.opacity = '1';
+                tutorialOverlay.style.pointerEvents = 'auto';
+                
+                const closeBtn = document.getElementById('close-tutorial-text');
+                if (closeBtn) {
+                    closeBtn.addEventListener('click', () => {
+                        tutorialOverlay.style.opacity = '0';
+                        tutorialOverlay.style.pointerEvents = 'none';
+                        sessionStorage.setItem('potatoTutorialShown', 'true');
+                    }, { once: true });
+                }
+            }
+        }
     }, 3500);
 
     const rainAudio = document.getElementById('rain-audio');
-    if (rainAudio) {
+    
+    // Apply mute visuals immediately on load based on sessionStorage
+    applyMuteVisuals();
+
+    if (rainAudio && !isMuted) {
         rainAudio.volume = BASE_VOLUME;
         let playPromise = rainAudio.play();
         if (playPromise !== undefined) {
@@ -366,7 +451,28 @@ window.addEventListener('focus', () => {
 // ================================================================
 // RAINDROPS GENERATOR
 // ================================================================
+let isAnyWindowOpen = false;
+
+function toggleWindowSfx(isOpen) {
+    if (isAnyWindowOpen === isOpen) return;
+    isAnyWindowOpen = isOpen;
+    const rainAudio = document.getElementById('rain-audio');
+    if (isOpen) {
+        document.body.classList.add('window-open-rain');
+        if (!isMuted && rainAudio) {
+            fadeAudio(rainAudio, BASE_VOLUME * 0.5, 1000);
+        }
+    } else {
+        document.body.classList.remove('window-open-rain');
+        if (!isMuted && rainAudio) {
+            fadeAudio(rainAudio, BASE_VOLUME, 1000);
+        }
+    }
+}
+
 function createRaindrop() {
+    if (isAnyWindowOpen) return;
+    if (isPotatoMode && Math.random() < 0.8) return;
     const rainContainer = document.getElementById('rain-layer');
     if (!rainContainer) return;
 
@@ -432,6 +538,8 @@ function spawnRain() {
 spawnRain();
 createFastRain(); // bootstrap if fastRain generator isn't already active
 function createFastRain() {
+    if (isAnyWindowOpen) return;
+    if (isPotatoMode && Math.random() < 0.8) return;
     const fastRainContainer = document.getElementById('fast-rain-layer');
     if (!fastRainContainer) return;
 
@@ -468,6 +576,8 @@ function spawnFastRain() {
 }
 
 function createStaticRaindrop(clusterLeft = null, clusterTop = null) {
+    if (isAnyWindowOpen) return;
+    if (isPotatoMode && Math.random() < 0.8) return;
     const staticRainContainer = document.getElementById('static-rain-layer');
     if (!staticRainContainer) return;
 
@@ -580,6 +690,7 @@ if (btnTrailer) {
             void sfxNotification.offsetWidth; // Reflow
             sfxNotification.classList.add('show');
         }
+        toggleWindowSfx(true);
     });
 }
 
@@ -588,12 +699,13 @@ if (closeVideoBtn) {
         e.preventDefault();
         videoWindow.classList.remove('slide-in');
         youtubePlayer.src = "https://www.youtube.com/embed/TWo91PrbsUc?enablejsapi=1&autoplay=0&mute=0&controls=1";
-        
+
         togglePurpleLighting(false);
 
         if (!wasMutedBeforeVideo && isMuted) {
             toggleMute(); // Restore unmute
         }
+        toggleWindowSfx(false);
     });
 }
 
@@ -606,6 +718,7 @@ function hideAllWindows() {
     windows.forEach(win => {
         win.classList.remove('slide-in');
     });
+    toggleWindowSfx(false);
 }
 
 // Synopsis Button
@@ -618,12 +731,25 @@ if (btnSynopsis && synopsisWindow) {
         e.preventDefault();
         hideAllWindows();
         synopsisWindow.classList.add('slide-in');
+        synopsisWindow.classList.remove('show-content');
+        clearTimeout(synopsisWindow.showTimeout);
+        const delay = isPotatoMode ? 0 : 1200;
+        synopsisWindow.showTimeout = setTimeout(() => {
+            synopsisWindow.classList.add('show-content');
+        }, delay);
         togglePurpleLighting(true);
+        showEscNotification();
+        toggleWindowSfx(true);
     });
 
     closeSynopsisBtn.addEventListener('click', () => {
         synopsisWindow.classList.remove('slide-in');
         togglePurpleLighting(false);
+        clearTimeout(synopsisWindow.showTimeout);
+        synopsisWindow.showTimeout = setTimeout(() => {
+            synopsisWindow.classList.remove('show-content');
+        }, 1200);
+        toggleWindowSfx(false);
     });
 }
 
@@ -637,7 +763,15 @@ if (btnGallery && galleryWindow) {
         e.preventDefault();
         hideAllWindows();
         galleryWindow.classList.add('slide-in');
+        galleryWindow.classList.remove('show-content');
+        clearTimeout(galleryWindow.showTimeout);
+        const delay = isPotatoMode ? 0 : 1200;
+        galleryWindow.showTimeout = setTimeout(() => {
+            galleryWindow.classList.add('show-content');
+        }, delay);
         togglePurpleLighting(true);
+        showEscNotification();
+        toggleWindowSfx(true);
     });
 
     closeGalleryBtn.addEventListener('click', () => {
@@ -645,6 +779,11 @@ if (btnGallery && galleryWindow) {
         const gdCol = document.getElementById('gallery-desc-column');
         if (gdCol) gdCol.classList.remove('fast-wipe');
         togglePurpleLighting(false);
+        clearTimeout(galleryWindow.showTimeout);
+        galleryWindow.showTimeout = setTimeout(() => {
+            galleryWindow.classList.remove('show-content');
+        }, 1200);
+        toggleWindowSfx(false);
     });
 }
 
@@ -658,12 +797,25 @@ if (btnTeam && teamWindow) {
         e.preventDefault();
         hideAllWindows();
         teamWindow.classList.add('slide-in');
+        teamWindow.classList.remove('show-content');
+        clearTimeout(teamWindow.showTimeout);
+        const delay = isPotatoMode ? 0 : 1200;
+        teamWindow.showTimeout = setTimeout(() => {
+            teamWindow.classList.add('show-content');
+        }, delay);
         togglePurpleLighting(true);
+        showEscNotification();
+        toggleWindowSfx(true);
     });
 
     closeTeamBtn.addEventListener('click', () => {
         teamWindow.classList.remove('slide-in');
         togglePurpleLighting(false);
+        clearTimeout(teamWindow.showTimeout);
+        teamWindow.showTimeout = setTimeout(() => {
+            teamWindow.classList.remove('show-content');
+        }, 1200);
+        toggleWindowSfx(false);
     });
 }
 
@@ -764,4 +916,78 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
+
+    // ================================================================
+    // VR BUTTON CONFIRM DIALOG
+    // ================================================================
+    const btnVr = document.getElementById('btn-vr');
+    const vrConfirmDialog = document.getElementById('vr-confirm-dialog');
+    const vrBtnYes = document.getElementById('vr-btn-yes');
+    const vrBtnNo = document.getElementById('vr-btn-no');
+
+    if (btnVr && vrConfirmDialog) {
+        btnVr.addEventListener('click', (e) => {
+            e.preventDefault();
+            vrConfirmDialog.classList.remove('show');
+            void vrConfirmDialog.offsetWidth; // Reflow
+            vrConfirmDialog.classList.add('show');
+        });
+
+        vrBtnYes.addEventListener('click', () => {
+            vrConfirmDialog.classList.remove('show');
+            window.open(btnVr.href, '_blank');
+        });
+
+        vrBtnNo.addEventListener('click', () => {
+            vrConfirmDialog.classList.remove('show');
+        });
+    }
+
+    // ================================================================
+    // ESC SHORTCUT & NOTIFICATION
+    // ================================================================
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            const windows = document.querySelectorAll('.content-window');
+            windows.forEach(win => {
+                if (win.classList.contains('slide-in')) {
+                    const closeBtn = win.querySelector('.close-btn');
+                    if (closeBtn) closeBtn.click();
+                }
+            });
+
+            const zoomOverlay = document.getElementById('image-zoom-overlay');
+            if (zoomOverlay && zoomOverlay.classList.contains('show')) {
+                const zoomClose = document.getElementById('close-zoom-btn');
+                if (zoomClose) zoomClose.click();
+            }
+
+            const vrConfirmDialog = document.getElementById('vr-confirm-dialog');
+            if (vrConfirmDialog && vrConfirmDialog.classList.contains('show')) {
+                vrConfirmDialog.classList.remove('show');
+            }
+            const videoWindow = document.getElementById('video-window');
+            if (videoWindow && videoWindow.classList.contains('slide-in')) {
+                const videoClose = document.getElementById('close-video-btn');
+                if (videoClose) videoClose.click();
+            }
+        }
+    });
 });
+
+let escNotificationShown = false;
+
+function showEscNotification() {
+    if (!escNotificationShown) {
+        const escNotif = document.getElementById('esc-notification');
+        if (escNotif) {
+            escNotif.classList.remove('show');
+            void escNotif.offsetWidth; // Reflow
+            escNotif.classList.add('show');
+            escNotificationShown = true;
+        }
+    }
+}
+
+// Initial application of Potato Mode
+applyPotatoModeVisuals();
