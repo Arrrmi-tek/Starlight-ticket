@@ -20,12 +20,12 @@ const translations = {
         synopsisText: "生活拮据的女主角在某夜抓住了翻身的機會，殊不知在背後卻有不法份子試圖利用這次的機會，做些不好的事情。最後主角也成功抓住了可以讓她從谷底翻身的票券，準備前往屬於她的星光航班，實現夢想。",
         roleWeb: "網頁設計",
         roleLight: "燈光設計",
-        roleArt: "美術",
+        roleArt: "場景美術",
         roleAnim: "動畫",
         roleShoot: "攝影",
         rolePost: "後期製作",
         roleProj: "專案管理",
-        roleProg: "程式設計",
+        roleProg: "3D建模",
         roleCam: "攝影",
         roleMusic: "音樂/音效設計",
         roleFilmEdit: "影片剪輯",
@@ -352,7 +352,7 @@ function applyMuteVisuals() {
 function toggleMute() {
     isMuted = !isMuted;
     sessionStorage.setItem('isMuted', isMuted);
-    
+
     applyMuteVisuals();
 
     const rainAudio = document.getElementById('rain-audio');
@@ -371,14 +371,14 @@ window.addEventListener('DOMContentLoaded', () => {
         if (siteIcon) {
             siteIcon.remove();
         }
-        
+
         // Potato Mode Tutorial Overlay Logic
         if (!sessionStorage.getItem('potatoTutorialShown')) {
             const tutorialOverlay = document.getElementById('potato-tutorial-overlay');
             if (tutorialOverlay) {
                 tutorialOverlay.style.opacity = '1';
                 tutorialOverlay.style.pointerEvents = 'auto';
-                
+
                 const closeBtn = document.getElementById('close-tutorial-text');
                 if (closeBtn) {
                     closeBtn.addEventListener('click', () => {
@@ -392,7 +392,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }, 3500);
 
     const rainAudio = document.getElementById('rain-audio');
-    
+
     // Apply mute visuals immediately on load based on sessionStorage
     applyMuteVisuals();
 
